@@ -17,7 +17,7 @@ onDestroy(() => {
 
 </script>
 
-<button on:click="{() => dbService.addTransaction()}">add</button>
+<button class="bg-white" on:click="{() => dbService.addTransaction()}">add</button>
 test
 <br>
 {#if transactions }
