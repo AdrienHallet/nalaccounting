@@ -1,6 +1,7 @@
 import { liveQuery, type Observable } from "dexie";
 import type { ITransaction } from "../model/transaction";
-import { DatabaseWrapper } from "./DatabaseWrapper";
+import databaseLoader from "./database-loader";
+import { DexieService } from "./dexie.service";
 
 /**
  * Handles database communications.
@@ -8,14 +9,16 @@ import { DatabaseWrapper } from "./DatabaseWrapper";
 export class DatabaseService {
     private static instance: DatabaseService;
 
-    private db: DatabaseWrapper;
+    public db: DexieService;
 
     private constructor() {
-        this.db = new DatabaseWrapper();
+        console.log("Creating DB service");
+        this.db = new DexieService();
     }
 
-    public static get(): DatabaseService {
+    public static async get(): Promise<DatabaseService> {
         if(!DatabaseService.instance) {
+            await databaseLoader();
             DatabaseService.instance = new DatabaseService();
         }
         return DatabaseService.instance;
@@ -27,11 +30,11 @@ export class DatabaseService {
         });
     }
 
-    addTransaction(): void {
+    public addTransaction(): void {
         this.db.transactions.add(<ITransaction>{ title: 'dynamic'})
     }
 
-    addOrUpdate(transaction: ITransaction) {
+    public addOrUpdate(transaction: ITransaction) {
         if (transaction.id) {
             this.db.transactions.update(transaction.id, transaction);
         } else {
