@@ -24,10 +24,14 @@ export class DatabaseService {
         return DatabaseService.instance;
     }
 
-    public getTransactions(): Observable<ITransaction[]> {
+    public getLiveTransactions(): Observable<ITransaction[]> {
         return liveQuery(async () =>{
             return await this.db.transactions?.toArray();
         });
+    }
+
+    public async getTransactions(): Promise<ITransaction[]> {
+        return await this.db.transactions.toArray();
     }
 
     public addTransaction(): void {

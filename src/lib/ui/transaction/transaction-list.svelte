@@ -1,22 +1,24 @@
 <script lang="ts">
   import { DatabaseService } from "$lib/logic/database/database.service";
+  import { DatabaseFacade } from "$lib/logic/database/state/database.state";
+  import type { ArrayState } from "$lib/logic/database/state/generic.state";
   import type { Transaction, ITransaction } from "$lib/logic/model/transaction";
   import type { Subscription } from "dexie";
   import { onDestroy } from "svelte";
+  import type { Writable } from "svelte/store";
   import Button from "../shared/button.svelte";
   import TransactionItem from "./transaction-item.svelte";
 
-  let dbService: DatabaseService;
-  let transactions: Transaction[] = [];
+  let dbFacade: DatabaseFacade;
   let subscription: Subscription;
+  let transactions: ArrayState<Transaction>;
+  let transactionsStore: Writable<Transaction[]>;
 
-  const isDbReady = DatabaseService.get();
-
-  isDbReady.then((service) => {
-    dbService = service;
-    subscription = dbService.getTransactions().subscribe((next) => {
-      console.debug("transactions updated");
-      transactions = next;
+  const isDbReady = DatabaseFacade.get().then(async (facade) => {
+    dbFacade = facade;
+    await facade.transactions().then((state) => {
+      transactions = state;
+      transactionsStore = state.store;
     });
   });
 
@@ -26,11 +28,17 @@
 
   const addTransaction = () => {
     const date = new Date();
-    const stringDate = date.getFullYear() + '-' + (date.getMonth()+1 < 10 ? '0' : '') + (date.getMonth()+1) + '-' + date.getDate();
-    dbService.addOrUpdate({
+    const stringDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 10 ? "0" : "") +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate();
+    transactions.add({
       date: stringDate,
-      title: '',
-      amount: '',
+      title: "",
+      amount: "",
     } as unknown as ITransaction);
   };
 </script>
@@ -62,7 +70,7 @@
           </tr>
         </thead>
         <tbody>
-          {#each transactions as transaction}
+          {#each $transactionsStore as transaction}
             <TransactionItem {transaction} />
           {/each}
         </tbody>
