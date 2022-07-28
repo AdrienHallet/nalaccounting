@@ -1,14 +1,11 @@
 <script lang="ts">
 import { AuthState } from "$lib/logic/auth/auth.state";
 import databaseExporter from "$lib/logic/database/database-exporter";
+import Poller from './poller.svelte';
 
 let isMenuExpanded = false;
 let userState = AuthState.userState;
 let isAuthenticated = AuthState.isAuthenticated;
-
-const onExport = () => {
-	databaseExporter();
-}
 </script>
 
 <header>
@@ -28,8 +25,8 @@ const onExport = () => {
 		  	<div class="md:flex flex-grow items-center"
 				class:hidden={!isMenuExpanded}>
 				<ul class="flex flex-col md:flex-row list-none ml-auto">
-					<li class="nav-item">
-						<button on:click={onExport}>Export</button>
+					<li class="nav-item flex flex-row">
+						<Poller></Poller>
 					</li>
 					<li class="nav-item">
 						<a class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="/">

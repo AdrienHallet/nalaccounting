@@ -1,29 +1,21 @@
 <script lang="ts">
-  import { DatabaseService } from "$lib/logic/database/database.service";
-  import { DatabaseFacade } from "$lib/logic/database/state/database.state";
+  import { DatabaseFacade } from "$lib/logic/database/state/database.facade";
   import type { ArrayState } from "$lib/logic/database/state/generic.state";
   import type { Transaction, ITransaction } from "$lib/logic/model/transaction";
   import type { Subscription } from "dexie";
   import { onDestroy } from "svelte";
-  import type { Writable } from "svelte/store";
+  import type { Unsubscriber, Writable } from "svelte/store";
   import Button from "../shared/button.svelte";
   import TransactionItem from "./transaction-item.svelte";
 
-  let dbFacade: DatabaseFacade;
-  let subscription: Subscription;
   let transactions: ArrayState<Transaction>;
   let transactionsStore: Writable<Transaction[]>;
 
   const isDbReady = DatabaseFacade.get().then(async (facade) => {
-    dbFacade = facade;
     await facade.transactions().then((state) => {
       transactions = state;
       transactionsStore = state.store;
     });
-  });
-
-  onDestroy(() => {
-    subscription?.unsubscribe();
   });
 
   const addTransaction = () => {
@@ -59,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="block w-full overflow-x-auto">
+    <div class="block w-full overflow-x-auto px-2">
       <!-- Projects table -->
       <table class="items-center w-full bg-transparent border-collapse">
         <thead>
@@ -67,6 +59,7 @@
             <th class="py-2 border border-x-0 text-left"> Date </th>
             <th class="py-2 border border-x-0 text-left"> Title </th>
             <th class="py-2 border border-x-0 text-left"> Amount </th>
+            <th class="py-2 border border-x-0 text-left"></th>
           </tr>
         </thead>
         <tbody>
