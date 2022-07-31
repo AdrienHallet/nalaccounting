@@ -1,6 +1,5 @@
 <script lang="ts">
 import { AuthState } from "$lib/logic/auth/auth.state";
-import databaseExporter from "$lib/logic/database/database-exporter";
 import Poller from './poller.svelte';
 
 let isMenuExpanded = false;

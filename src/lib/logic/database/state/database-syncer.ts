@@ -1,18 +1,45 @@
 import type { Transaction } from "$lib/logic/model/transaction";
+import databaseExporter from "../database-exporter";
 import { DatabaseService } from "../database.service";
 import { DatabaseFacade } from "./database.facade";
 import { StateAction, StateActionType } from "./state-action";
 
+let previousLength = 0;
 const poll = async (pollingState: PollingState) => {
     const transactions = await (await DatabaseFacade.get()).transactions();
+    if (transactions.actionQueue.length > 0 && transactions.actionQueue.length != previousLength) {
+        previousLength = transactions.actionQueue.length;
+        pollingState.setFresh(false);
+        resetTimeout(pollingState);
+    }
+    pollingState.setProcessing(false);   
+}
+
+let exportTimeout: NodeJS.Timer;
+const resetTimeout = (pollingState: PollingState) => {
+    if (exportTimeout) {
+        clearInterval(exportTimeout);
+    }
+    exportTimeout = setInterval(exportDatabase, 10000, pollingState);
+}
+
+const exportDatabase = async (pollingState: PollingState) => {
+    pollingState.setProcessing(true);
+    processEvents();
+    await databaseExporter(); 
+    pollingState.setProcessing(false);
+    pollingState.setFresh(true);
+    clearInterval(exportTimeout);
+}
+
+const processEvents = async () => {
+    const transactions = await (await DatabaseFacade.get()).transactions();
     while (transactions.actionQueue.length > 0) {
-        pollingState.setProcessing(true);
         const shift = transactions.actionQueue.shift();
         if (shift) {
             processTransaction(shift);
         }
     } 
-    pollingState.setProcessing(false);   
 }
 
 let poller: NodeJS.Timer;
@@ -34,6 +61,7 @@ export const stopPolling = () => {
 
 export interface PollingState {
     setPolling: (isPolling: boolean) => void,
+    setFresh: (isFresh: boolean) => void,
     setProcessing: (isProcessing: boolean) => void,
 }
 
