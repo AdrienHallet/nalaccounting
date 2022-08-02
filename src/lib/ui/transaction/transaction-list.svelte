@@ -1,33 +1,23 @@
 <script lang="ts">
-  import { DatabaseFacade } from "$lib/logic/database/state/database.facade";
-  import type { ArrayState } from "$lib/logic/database/state/generic.state";
+  import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
   import type { Transaction, ITransaction } from "$lib/logic/model/transaction";
-  import type { Subscription } from "dexie";
-  import { onDestroy } from "svelte";
-  import type { Unsubscriber, Writable } from "svelte/store";
+  import type { Writable } from "svelte/store";
   import Button from "../shared/button.svelte";
   import TransactionItem from "./transaction-item.svelte";
 
-  let transactions: ArrayState<Transaction>;
-  let transactionsStore: Writable<Transaction[]>;
+  let transactionFacade: TransactionFacade;
+  let transactions: Writable<Transaction[]>;
 
-  const isDbReady = DatabaseFacade.get().then(async (facade) => {
-    await facade.transactions().then((state) => {
-      transactions = state;
-      transactionsStore = state.store;
-    });
+  const isDbReady = TransactionFacade.get().then(async (facade) => {
+    transactionFacade = facade;
+    transactions = facade.getStore();
+    await facade.load();
   });
 
   const addTransaction = () => {
     const date = new Date();
-    const stringDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1 < 10 ? "0" : "") +
-      (date.getMonth() + 1) +
-      "-" +
-      date.getDate();
-    transactions.add({
+    const stringDate = date.toISOString().split("T")[0];
+    transactionFacade.add({
       date: stringDate,
       title: "",
       amount: "",
@@ -57,13 +47,13 @@
         <thead>
           <tr>
             <th class="py-2 border border-x-0 text-left"> Date </th>
-            <th class="py-2 border border-x-0 text-left"> Title </th>
             <th class="py-2 border border-x-0 text-left"> Amount </th>
+            <th class="py-2 border border-x-0 text-left"> Title </th>
             <th class="py-2 border border-x-0 text-left"></th>
           </tr>
         </thead>
         <tbody>
-          {#each $transactionsStore as transaction}
+          {#each $transactions as transaction}
             <TransactionItem {transaction} />
           {/each}
         </tbody>

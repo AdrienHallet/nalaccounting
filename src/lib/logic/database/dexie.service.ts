@@ -2,15 +2,23 @@ import Dexie from "dexie";
 import type { ITransaction } from "../model/transaction";
 
 export class DexieService extends Dexie {
+    private static instance: DexieService;
     transactions!: Dexie.Table<ITransaction, number>;
 
-    constructor() {
+    private constructor() {
         super("budjet");
         console.log("INSTANCE");
 
         this.version(1).stores({
             transactions: '++id, amount, title',
         });
+    }
+
+    public static get(): DexieService {
+        if (!DexieService.instance) {
+            DexieService.instance = new DexieService();
+        }
+        return DexieService.instance;
     }
 
     async load(blob: Blob): Promise<void> {

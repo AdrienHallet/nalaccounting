@@ -1,28 +1,24 @@
+import type { ITransaction, } from "$lib/logic/model/transaction";
 import { liveQuery, type Observable } from "dexie";
-import type { ITransaction } from "../model/transaction";
-import databaseLoader from "./database-loader";
-import { DexieService } from "./dexie.service";
-import { startPolling } from "./state/database-syncer";
+import databaseLoader from "../database-loader";
+import { DexieService } from "../dexie.service";
 
-/**
- * Handles database communications.
- */
-export class DatabaseService {
-    private static instance: Promise<DatabaseService>;
+export class TransactionService {
+    private static instance: Promise<TransactionService>;
 
     public db: DexieService;
 
     private constructor() {
         console.log("Creating DB service");
-        this.db = new DexieService();
+        this.db = DexieService.get();
     }
 
-    public static async get(): Promise<DatabaseService> {
-        if(!DatabaseService.instance) {
+    public static async get(): Promise<TransactionService> {
+        if(!TransactionService.instance) {
             await databaseLoader();
-            DatabaseService.instance = Promise.resolve(new DatabaseService());
+            TransactionService.instance = Promise.resolve(new TransactionService());
         }
-        return DatabaseService.instance;
+        return TransactionService.instance;
     }
 
     public getLiveTransactions(): Observable<ITransaction[]> {
@@ -41,9 +37,9 @@ export class DatabaseService {
 
     public addOrUpdate(transaction: ITransaction) {
         if (transaction.id) {
-            this.db.transactions.update(transaction.id, transaction);
+            return this.db.transactions.update(transaction.id, transaction);
         } else {
-            this.db.transactions.add(transaction);
+            return this.db.transactions.add(transaction);
         }
     }
 
@@ -51,6 +47,6 @@ export class DatabaseService {
         if (!transaction.id) {
             throw new Error("Cannot delete transaction without an ID");
         }
-        this.db.transactions.delete(transaction.id);
+        return this.db.transactions.delete(transaction.id);
     }
 }

@@ -1,14 +1,11 @@
-import type { Transaction } from "$lib/logic/model/transaction";
 import databaseExporter from "../database-exporter";
-import { DatabaseService } from "../database.service";
-import { DatabaseFacade } from "./database.facade";
-import { StateAction, StateActionType } from "./state-action";
+import { TransactionFacade } from "../facade/transaction.facade";
 
-let previousLength = 0;
+let previousChange: Date | null;
 const poll = async (pollingState: PollingState) => {
-    const transactions = await (await DatabaseFacade.get()).transactions();
-    if (transactions.actionQueue.length > 0 && transactions.actionQueue.length != previousLength) {
-        previousLength = transactions.actionQueue.length;
+    const transactionFacade = await TransactionFacade.get();
+    if (previousChange != transactionFacade.getLastChange()) {
+        previousChange = transactionFacade.getLastChange();
         pollingState.setFresh(false);
         resetTimeout(pollingState);
     }
@@ -25,34 +22,17 @@ const resetTimeout = (pollingState: PollingState) => {
 
 const exportDatabase = async (pollingState: PollingState) => {
     pollingState.setProcessing(true);
-    processEvents();
     await databaseExporter(); 
     pollingState.setProcessing(false);
     pollingState.setFresh(true);
     clearInterval(exportTimeout);
 }
 
-const processEvents = async () => {
-    const transactions = await (await DatabaseFacade.get()).transactions();
-    while (transactions.actionQueue.length > 0) {
-        const shift = transactions.actionQueue.shift();
-        if (shift) {
-            processTransaction(shift);
-        }
-    } 
-}
-
 let poller: NodeJS.Timer;
-let databaseFacade: DatabaseFacade;
-let databaseService: DatabaseService;
 
 export const startPolling = (pollingState: PollingState) => {
-    DatabaseFacade.get().then(async facade => {
-        databaseFacade = facade;
-        databaseService = await DatabaseService.get();
-        poller = setInterval(poll, 200, pollingState);
-        pollingState.setPolling(true);
-    });
+    poller = setInterval(poll, 200, pollingState);
+    pollingState.setPolling(true);
 }
 
 export const stopPolling = () => {
@@ -63,18 +43,4 @@ export interface PollingState {
     setPolling: (isPolling: boolean) => void,
     setFresh: (isFresh: boolean) => void,
     setProcessing: (isProcessing: boolean) => void,
-}
-
-const processTransaction = (toProcess: StateAction<Transaction>) => {
-    switch (toProcess.type) {
-        case StateActionType.ADD:
-        case StateActionType.UPDATE:
-            databaseService.addOrUpdate(toProcess.item);
-            break;
-        case StateActionType.DELETE:
-            databaseService.delete(toProcess.item);
-            break;
-        default:
-            throw new Error("Unhandled type StateAction for Transaction: " + toProcess.type);
-    }
 }

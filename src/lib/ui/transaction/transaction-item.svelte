@@ -3,29 +3,25 @@
 </script>
 
 <script lang="ts">
-  import { DatabaseFacade } from "$lib/logic/database/state/database.facade";
-  import type { ArrayState } from "$lib/logic/database/state/generic.state";
   import { Transaction, type ITransaction } from "$lib/logic/model/transaction";
+  import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
 
   export let transaction: ITransaction;
+  let transactionFacade: TransactionFacade;
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
 
-  let transactions: ArrayState<Transaction>;
-
-  DatabaseFacade.get().then(async (facade) => {
-    await facade.transactions().then((state) => {
-      transactions = state;
-    });
+  TransactionFacade.get().then(async (facade) => {
+    transactionFacade = facade;
   });
 
   // Update transaction on change
   $: if (!originalTransaction.compare(transaction)) {
-    transactions.update(transaction);
+    transactionFacade.update(transaction);
     originalTransaction = new Transaction(transaction);
   }
 
-  const handleClick = () => {
+  const setEditing = () => {
     editedTransaction();
     editedTransaction = () => {
       isEditing = false;
@@ -34,32 +30,39 @@
   };
 
   const onClickRemove = () => {
-    transactions.delete(transaction);
+    transactionFacade.delete(transaction);
   };
 
   const editingClasses = "border-2 border-gray-100 bg-zinc-600";
 </script>
 
-<tr class={isEditing ? editingClasses : ""} on:click={handleClick}>
-  {#if isEditing}
-    <td class="w-2/12">
-      <input class="bg-zinc-700" type="date" bind:value={transaction.date} />
-    </td>
-    <td class="w-5/12">
-      <input class="bg-zinc-700" bind:value={transaction.title} />
-    </td>
-    <td class="w-2/12">
-      <input class="bg-zinc-700" bind:value={transaction.amount} />
-    </td>
-  {:else}
-    <td class="w-2/12"> {transaction.date} </td>
-    <td class="w-7/12">
-      {transaction.title}
-    </td>
-    <td class="w-2/12">
-      {transaction.amount ?? "N/A"}
-    </td>
-  {/if}
+<tr class={isEditing ? editingClasses : ""} on:click={setEditing}>
+  <td class="w-2/12">
+    <input
+      class="bg-zinc-700"
+      type="date"
+      bind:value={transaction.date}
+      readonly={!isEditing}
+      on:focus={setEditing}
+    />
+  </td>
+  <td class="w-2/12">
+    <input
+      class="bg-zinc-700"
+      bind:value={transaction.amount}
+      type="number"
+      readonly={!isEditing}
+      on:focus={setEditing}
+    />
+  </td>
+  <td class="w-7/12">
+    <input
+      class="bg-zinc-700 w-full text-ellipsis"
+      bind:value={transaction.title}
+      readonly={!isEditing}
+      on:focus={setEditing}
+    />
+  </td>
   <td class="w-1/12 text-center">
     <svg
       on:click={onClickRemove}

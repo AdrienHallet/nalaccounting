@@ -1,10 +1,8 @@
 import { writable, type Writable } from "svelte/store";
-import { StateAction, StateActionType } from "./state-action";
 
-// Todo: Improvement idea: clear queue of nonsensical actions upon actions (e.g., clear updates after update/delete)
 export class ArrayState<T extends {id?: number}> {
     public store: Writable<T[]> = writable();
-    public actionQueue: StateAction<T>[] = []
+    public lastChange: Date | null = null;
 
     public init = (items: T[]) => {
         this.store.update(() => items);
@@ -14,7 +12,6 @@ export class ArrayState<T extends {id?: number}> {
         this.store.update(items => {
             return [...items, added];
         });
-        this.actionQueue.push(new StateAction(StateActionType.ADD, added));
     }
 
     public update = (updated: T) => {
@@ -26,7 +23,6 @@ export class ArrayState<T extends {id?: number}> {
             items[toUpdateIndex] = updated;
             return items;
         })
-        this.actionQueue.push(new StateAction(StateActionType.UPDATE, updated));
     }
 
     public delete = (deleted: T) => {
@@ -40,6 +36,5 @@ export class ArrayState<T extends {id?: number}> {
                 throw new Error('Could not delete item with id: ' + deleted.id);
             }
         })
-        this.actionQueue.push(new StateAction(StateActionType.DELETE, deleted));
     }
 }
