@@ -6,7 +6,7 @@ import { DexieService } from "./dexie.service";
 
 export default async () => {
     const user = get(AuthState.userState);
-    const db = DexieService.get();
+    const db = await DexieService.get();
     const blob = await db.export();
     console.log(blob);
     const sha = localStorage.getItem(LOCAL_SHA) ?? undefined;

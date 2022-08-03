@@ -4,6 +4,7 @@ import { GithubApi } from "../github/github.api";
 import type { IGithubRepo } from "../model/github-repo";
 import { HttpError } from "../model/http-error";
 import type { IUser } from "../model/user";
+import { base64ToBlob } from "../utils/file.utils";
 import { DATA_REPO_NAME, LOCAL_SHA } from "./database.const";
 
 export default async (): Promise<[blob: Blob, sha: string] | never[]> => {
@@ -12,9 +13,10 @@ export default async (): Promise<[blob: Blob, sha: string] | never[]> => {
     // const repo = await getRepository(user);
     try {
         const content = await GithubApi.getContent(user.login, DATA_REPO_NAME);
-        const file = await GithubApi.getBlob(content[0].git_url);
-        localStorage.setItem(LOCAL_SHA, file.sha);
-        return [file.content, file.sha];
+        const gitBlob = await GithubApi.getBlob(content[0].git_url);
+        const blob = await base64ToBlob(gitBlob.content);
+        localStorage.setItem(LOCAL_SHA, gitBlob.sha);
+        return [blob, gitBlob.sha];
     } catch (error) {
         if (error instanceof HttpError && error.status === 404) {
             console.log("No persisted database found, creating a new one ...");

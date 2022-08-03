@@ -1,6 +1,6 @@
 import type { ITransaction, } from "$lib/logic/model/transaction";
 import { liveQuery, type Observable } from "dexie";
-import databaseLoader from "../database-loader";
+import databaseLoader from "../database-retriever";
 import { DexieService } from "../dexie.service";
 
 export class TransactionService {
@@ -8,15 +8,14 @@ export class TransactionService {
 
     public db: DexieService;
 
-    private constructor() {
-        console.log("Creating DB service");
-        this.db = DexieService.get();
+    private constructor(dexieService: DexieService) {
+        this.db = dexieService;
     }
 
     public static async get(): Promise<TransactionService> {
         if(!TransactionService.instance) {
-            await databaseLoader();
-            TransactionService.instance = Promise.resolve(new TransactionService());
+            const dexieService = await DexieService.get();
+            TransactionService.instance = Promise.resolve(new TransactionService(dexieService));
         }
         return TransactionService.instance;
     }

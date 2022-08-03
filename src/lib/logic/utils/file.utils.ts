@@ -9,3 +9,7 @@ export async function blobToBase64(blob: Blob): Promise<string> {
         fileReader.onerror = error => reject(error);
     });
 }
+
+export async function base64ToBlob(base64: string): Promise<Blob> {
+    return await (await fetch(`data:;base64,${base64}`)).blob()
+}

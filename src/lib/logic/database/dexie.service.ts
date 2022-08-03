@@ -1,5 +1,6 @@
 import Dexie from "dexie";
 import type { ITransaction } from "../model/transaction";
+import databaseLoader from "./database-retriever";
 
 export class DexieService extends Dexie {
     private static instance: DexieService;
@@ -14,9 +15,12 @@ export class DexieService extends Dexie {
         });
     }
 
-    public static get(): DexieService {
+    public static async get(): Promise<DexieService> {
         if (!DexieService.instance) {
+            console.log("Creating DB service");
             DexieService.instance = new DexieService();
+            const [blob, _] = await databaseLoader();
+            await DexieService.instance.load(blob);
         }
         return DexieService.instance;
     }
