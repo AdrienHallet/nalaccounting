@@ -31,9 +31,8 @@ export class AuthService {
      * Authenticates the user.
      */
     public async authenticate(): Promise<string> {
-        const optToken = this.tryLocalAuthentication();
+        const optToken = await this.tryLocalAuthentication();
         if (optToken) {
-            await AuthState.setToken(optToken)
             return optToken;
         }
         return new Promise((resolve) => this.netlifyAuthenticator.authenticate(
@@ -56,8 +55,11 @@ export class AuthService {
         ));
     }
 
-    private tryLocalAuthentication(): string | null {
+    public async tryLocalAuthentication(): Promise<string | null> {
         const localStorageToken = this.getLocalStorageToken(); // might be null if none present
+        if (localStorageToken) {
+            await AuthState.setToken(localStorageToken)
+        }
         return localStorageToken;
     }
 
