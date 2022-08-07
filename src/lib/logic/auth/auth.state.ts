@@ -4,8 +4,8 @@ import { GithubApi } from "../github/github.api";
 
 export class AuthState {
 
-    public static userState: Writable<IUser> = writable();
-    public static tokenState: Writable<string> = writable();
+    public static userState: Writable<IUser | null> = writable();
+    public static tokenState: Writable<string | null> = writable();
     public static isAuthenticated = derived(this.userState, $userState => $userState != null, false);
 
     public static hasUser(): boolean {
@@ -25,6 +25,12 @@ export class AuthState {
         const user: IUser = await GithubApi.getUser();
         this.userState.update(() => user);
         this.tokenState.update(() => token);
+    }
+
+    public static async clearToken() {
+        GithubApi.setToken("");
+        this.userState.set(null)
+        this.tokenState.set(null);
     }
 
 }

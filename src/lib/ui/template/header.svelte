@@ -1,9 +1,9 @@
 <script lang="ts">
 import { AuthState } from "$lib/logic/auth/auth.state";
 import Poller from './poller.svelte';
+import UserDropdown from "./user-dropdown.svelte";
 
 let isMenuExpanded = false;
-let userState = AuthState.userState;
 let isAuthenticated = AuthState.isAuthenticated;
 </script>
 
@@ -28,9 +28,7 @@ let isAuthenticated = AuthState.isAuthenticated;
 						<Poller></Poller>
 					</li>
 					<li class="nav-item">
-						<a class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="/">
-							Welcome { $userState?.login ?? 'loading' }
-						</a>
+						<UserDropdown></UserDropdown>
 					</li>
 				</ul>
 		  	</div>

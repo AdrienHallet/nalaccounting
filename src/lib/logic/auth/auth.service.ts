@@ -63,6 +63,12 @@ export class AuthService {
         return localStorageToken;
     }
 
+    public async signOut() {
+        // Todo reactivate after testing
+        localStorage.removeItem('token');
+        AuthState.clearToken();
+    }
+
     private getLocalStorageToken() {
         return localStorage.getItem('token');
     }
