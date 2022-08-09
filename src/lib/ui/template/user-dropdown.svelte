@@ -16,7 +16,7 @@
   };
 </script>
 
-<div class="relative inline-block text-left">
+<div class="relative md:inline-block text-left">
   <a
     class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 relative z-30"
     href="/"
@@ -28,11 +28,11 @@
     <div class="z-20">
       <div
         transition:fade={{ duration: 200 }}
-        class="fixed opacity-50 bg-zinc-900 w-full h-full top-0 left-0 z-20"
+        class="fixed opacity-50 bg-zinc-900 w-full h-full top-0 left-0 z-10"
         on:click={() => (expanded = false)}
       />
       <div
-        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+        class="origin-top-right relative md:absolute right-0 mt-2 md:w-56 md:rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
@@ -41,7 +41,7 @@
         <div class="py-1" role="none">
           <a
             on:click={signOut}
-            href="#"
+            href="#/"
             class="text-gray-700 block px-4 py-2 text-sm"
             role="menuitem"
             tabindex="-1"
