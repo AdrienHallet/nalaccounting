@@ -4,14 +4,12 @@
 	import '../app.css'
 </script>
 
-<div class="flex flex-col h-screen justify-items-center">
+<div class="flex flex-col justify-items-center min-h-screen">
 	<div class="flex-initial">
 		<Header></Header>
 	</div>
-	<div class="flex flex-auto px-4">
-		<slot></slot>
-	</div>
-	<div class="flex">
+	<slot></slot>
+	<div class="relative bottom-0 left-0 right-0 mt-auto">
 		<Footer></Footer>
 	</div>
 </div>

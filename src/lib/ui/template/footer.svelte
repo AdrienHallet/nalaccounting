@@ -13,7 +13,7 @@ import Adrien from "../svg/adrien.svelte";
             </div> 
             <div class="w-full md:w-8/12 px-4">
                 <ul class="flex flex-wrap list-none md:justify-end justify-center">
-                    <li><a href="/" class="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3">About</a></li> 
+                    <li><a href="/about" class="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3">About</a></li> 
                 </ul>
             </div>
         </div>
