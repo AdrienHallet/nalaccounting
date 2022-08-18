@@ -17,13 +17,12 @@
 </script>
 
 <div class="relative md:inline-block text-left">
-  <a
-    class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 relative z-30"
-    href="/"
+  <span
+    class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 relative z-30 cursor-pointer"
     on:click={() => (expanded = !expanded)}
   >
     Welcome {$userState?.login ?? "loading"}
-  </a>
+  </span>
   {#if expanded}
     <div class="z-20">
       <div
@@ -41,7 +40,7 @@
         <div class="py-1" role="none">
           <a
             on:click={signOut}
-            href="#/"
+            href="/#"
             class="text-gray-700 block px-4 py-2 text-sm"
             role="menuitem"
             tabindex="-1"
