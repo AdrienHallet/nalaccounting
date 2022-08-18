@@ -1,5 +1,5 @@
 <script lang="ts">
-  import changelog from "../../../CHANGELOG.md?raw";
+  import changelog from "../../../static/CHANGELOG.md?raw";
   import parser from "$lib/logic/changelog/parser";
 
   // Todo can probably only happen once per server startup
