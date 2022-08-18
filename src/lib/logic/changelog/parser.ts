@@ -13,7 +13,7 @@ export default (raw: string) => {
     if (changelogs.length > 0) {
         return changelogs;
     }
-    const separator = raw.includes("\r\n") ? "\r\n" : "\n\n" 
+    const separator = "\n";
     const lines = raw.split(separator);
     let active = "";
     lines.forEach(line => {
@@ -33,7 +33,7 @@ export default (raw: string) => {
             parseNewEntry(line);
             return;
         }
-        active += `${line}separator`;        
+        active += `${line}${separator}`;        
     })
     if (active?.length > 0) {
         changelogs[changelogs.length - 1].content = toChangelogLine(active);
