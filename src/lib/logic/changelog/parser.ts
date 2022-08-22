@@ -61,13 +61,3 @@ const parseNewEntry = (line: string) => {
 function toChangelogLine(line: string): string {
     return marked.parse(line.trim());
 }
-
-const markedRendered = () => {
-    const renderer = new marked.Renderer();
-
-    renderer.list = function(body, ordered, start) {
-        return `<ul class="list-disc list-inside">${body}</ul>`
-    }
-
-    return renderer;
-}
