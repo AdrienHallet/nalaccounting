@@ -1,5 +1,5 @@
 <script>
-  import { browser } from "$app/env";
+  import { browser } from "$app/environment";
 
   import { goto } from "$app/navigation";
   import { AuthState } from "$lib/logic/auth/auth.state";
