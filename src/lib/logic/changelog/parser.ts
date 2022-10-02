@@ -39,7 +39,6 @@ export default (raw: string) => {
         changelogs[changelogs.length - 1].content = toChangelogLine(active);
         active = "";
     }
-    console.debug(changelogs);
     return changelogs;
 }
 
