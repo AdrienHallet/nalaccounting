@@ -23,6 +23,11 @@ let isAuthenticated = AuthState.isAuthenticated;
 			{#if $isAuthenticated}
 		  	<div class="md:flex flex-grow items-center"
 				class:hidden={!isMenuExpanded}>
+				<ul>
+					<li class="flex items-center">
+						<a href="/transactions">Transactions</a>
+					</li>
+				</ul>
 				<ul class="flex flex-col md:flex-row list-none ml-auto">
 					<li class="nav-item flex flex-row">
 						<Poller></Poller>

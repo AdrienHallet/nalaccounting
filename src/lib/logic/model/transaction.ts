@@ -1,6 +1,6 @@
 export interface ITransaction {
     id?: number;
-    date?: string;
+    date: string;
     amount? :number;
     title? :string;
 
@@ -9,7 +9,7 @@ export interface ITransaction {
 
 export class Transaction implements ITransaction {
     id?: number;
-    date?: string;
+    date: string;
     amount? :number;
     title? :string;
 

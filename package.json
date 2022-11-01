@@ -37,6 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"chart.js": "^3.9.1",
 		"dexie": "^3.2.2",
 		"dexie-export-import": "^1.0.3",
 		"marked": "^4.0.18",

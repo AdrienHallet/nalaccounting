@@ -10,6 +10,6 @@ export default async () => {
     const blob = await db.export();
     console.log(blob);
     const sha = localStorage.getItem(LOCAL_SHA) ?? undefined;
-    const response = await (await (GithubApi.putBlob(user.login, DATA_REPO_NAME, blob, DATA_FILE_NAME, sha))).json();
+    const response = await (await (GithubApi.putBlob(user!.login, DATA_REPO_NAME, blob, DATA_FILE_NAME, sha))).json();
     localStorage.setItem(LOCAL_SHA, response.content.sha)
 }
