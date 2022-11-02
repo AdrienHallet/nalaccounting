@@ -10,7 +10,7 @@ export interface ITransaction {
 export class Transaction implements ITransaction {
     id?: number;
     date: string;
-    amount? :number;
+    amount? :number; // CENT amount of the transaction
     title? :string;
 
     constructor(iTransaction: ITransaction) {

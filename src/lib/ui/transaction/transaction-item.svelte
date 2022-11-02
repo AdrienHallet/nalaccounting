@@ -10,16 +10,32 @@
   let transactionFacade: TransactionFacade;
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
+  let displayValue: any = (transaction.amount || 0) / 100;
 
   TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
   });
 
   // Update transaction on change
-  $: if (!originalTransaction.compare(transaction)) {
-    transactionFacade.update(transaction);
-    originalTransaction = new Transaction(transaction);
-  }
+  $: updateTransaction();
+  const updateTransaction = () => {
+    if (!originalTransaction.compare(transaction)) {
+      transactionFacade.update(transaction);
+      originalTransaction = new Transaction(transaction);
+    }
+  };
+
+  let initialized = false;
+  $: displayValue, updateDisplay();
+
+  const updateDisplay = () => {
+    if (initialized) {
+      transaction.amount = displayValue * 100;
+      updateTransaction();
+    } else {
+      initialized = true;
+    }
+  };
 
   const setEditing = () => {
     editedTransaction();
@@ -48,8 +64,17 @@
   </td>
   <td class="w-2/12">
     <input
-      class="bg-zinc-700"
+      class="hidden"
       bind:value={transaction.amount}
+      step="any"
+      type="number"
+      readonly={!isEditing}
+      on:focus={setEditing}
+    />
+    <input
+      class="bg-zinc-700"
+      bind:value={displayValue}
+      step="any"
       type="number"
       readonly={!isEditing}
       on:focus={setEditing}
