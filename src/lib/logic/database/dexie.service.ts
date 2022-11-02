@@ -10,8 +10,8 @@ export class DexieService extends Dexie {
         super("budjet");
         console.log("INSTANCE");
 
-        this.version(1).stores({
-            transactions: '++id, amount, title',
+        this.version(2).stores({
+            transactions: '++id, date, amount, title',
         });
     }
 

@@ -27,7 +27,7 @@ export class TransactionService {
     }
 
     public async getTransactions(): Promise<ITransaction[]> {
-        return await this.db.transactions.toArray();
+        return await this.db.transactions.orderBy('date').reverse().toArray();
     }
 
     public addTransaction(): void {
