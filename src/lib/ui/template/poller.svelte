@@ -1,6 +1,11 @@
 <script lang="ts">
-  import { startPolling, stopPolling, type PollingState } from "$lib/logic/database/state/database-syncer";
+  import {
+    startPolling,
+    stopPolling,
+    type PollingState,
+  } from "$lib/logic/database/state/database-syncer";
   import { get, writable } from "svelte/store";
+  import ArrowUp from "../shared/icon/arrow-up.svelte";
 
   let isPolling = writable(false);
   let isProcessing = writable(false);
@@ -21,24 +26,23 @@
   startPolling(pollingState);
 
   const togglePolling = () => {
-    if(get(isPolling)) {
+    if (get(isPolling)) {
       stopPolling(pollingState);
     } else {
       startPolling(pollingState);
     }
-  }
-
+  };
 </script>
-
-<div class="flex items-center cursor-pointer" on:click={togglePolling}>
+<div class="flex items-center cursor-pointer w-6 justify-center hover:border border-zinc-600 rounded-sm" on:click={togglePolling}>
   {#if $isPolling}
     {#if $isProcessing}
-      Sending ...
-    {/if}
-    {#if $isFresh}
-      <span class="h-2 w-2 bg-green-600 rounded-full align-middle" />
+      <div class="text-orange-600 animate-bounce">
+        <ArrowUp />
+      </div>
+    {:else if $isFresh}
+      <span class="h-2 w-2 bg-green-600 rounded-full" />
     {:else}
-      <span class="h-2 w-2 bg-orange-600 rounded-full align-middle" />
+      <span class="h-2 w-2 bg-orange-600 rounded-full" />
     {/if}
   {:else}
     <span class="h-2 w-2 bg-red-600 rounded-full align-middle" />
