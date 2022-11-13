@@ -8,27 +8,34 @@ import { base64ToBlob } from "../utils/file.utils";
 import { DATA_REPO_NAME, LOCAL_SHA } from "./database.const";
 
 export default async (): Promise<[blob: Blob, sha: string] | never[]> => {
-    const user = get(AuthState.userState);
-    // Todo probably not necessary (could directly attempt to retrieve file)
-    // const repo = await getRepository(user);
-    try {
-        const content = await GithubApi.getContent(user.login, DATA_REPO_NAME);
-        const gitBlob = await GithubApi.getBlob(content[0].git_url);
-        const blob = await base64ToBlob(gitBlob.content);
-        localStorage.setItem(LOCAL_SHA, gitBlob.sha);
-        return [blob, gitBlob.sha];
-    } catch (error) {
-        if (error instanceof HttpError && error.status === 404) {
-            console.log("No persisted database found, creating a new one ...");
-            await initializeRepository(user);
-            return [];
-        }
-        else {
-            // todo this
-            console.error(error);
-            throw new Error("recover from this noob");
-        }
-    }    
+    return new Promise(function(resolve, reject) {
+        const unsub = AuthState.userState.subscribe(async user => {
+            if (user == null) {
+                return;
+            }
+            try {
+                const content = await GithubApi.getContent(user.login, DATA_REPO_NAME);
+                const gitBlob = await GithubApi.getBlob(content[0].git_url);
+                const blob = await base64ToBlob(gitBlob.content);
+                localStorage.setItem(LOCAL_SHA, gitBlob.sha);
+                resolve([blob, gitBlob.sha]);
+            } catch (error) {
+                if (error instanceof HttpError && error.status === 404) {
+                    console.log("No persisted database found, creating a new one ...");
+                    await initializeRepository(user);
+                    reject([]);
+                }
+                else {
+                    // todo this
+                    console.error(error);
+                    throw new Error("recover from this noob");
+                }
+            } finally {
+                unsub();
+            }
+        });
+    });
+
 }
 
 async function initializeRepository(user: IUser): Promise<IGithubRepo> {
