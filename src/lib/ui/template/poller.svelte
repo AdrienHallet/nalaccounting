@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import {
     startPolling,
     stopPolling,
     type PollingState,
   } from "$lib/logic/database/state/database-syncer";
+  import { onDestroy } from "svelte";
   import { get, writable } from "svelte/store";
   import ArrowUp from "../shared/icon/arrow-up.svelte";
 
@@ -23,7 +25,11 @@
     },
   };
 
-  startPolling(pollingState);
+  if (browser) {
+    startPolling(pollingState);
+    onDestroy(() => {stopPolling(pollingState)})
+  }
+  
 
   const togglePolling = () => {
     if (get(isPolling)) {
