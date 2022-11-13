@@ -16,13 +16,8 @@
   };
 </script>
 
-<div class="relative md:inline-block text-left">
-  <span
-    class="px-4 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 relative z-30 cursor-pointer"
-    on:click={() => (expanded = !expanded)}
-  >
-    Welcome {$userState?.login ?? "loading"}
-  </span>
+<div class="relative p-1 rounded-full cursor-pointer bg-zinc-700 hover:bg-zinc-300">
+  <img src="{$userState?.avatar_url}" alt="avatar" class="h-8 max-w-none" on:click={() => (expanded = !expanded)}>
   {#if expanded}
     <div class="z-20">
       <div
@@ -31,7 +26,7 @@
         on:click={() => (expanded = false)}
       />
       <div
-        class="origin-top-right relative md:absolute right-0 mt-2 md:w-56 md:rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"

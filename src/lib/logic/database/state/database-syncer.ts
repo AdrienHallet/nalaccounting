@@ -1,6 +1,8 @@
 import databaseExporter from "../database-exporter";
 import { TransactionFacade } from "../facade/transaction.facade";
 
+// todo: instead of local poll, listen to changes in states
+
 let previousChange: Date | null;
 let fresh = true;
 const poll = async (pollingState: PollingState) => {
