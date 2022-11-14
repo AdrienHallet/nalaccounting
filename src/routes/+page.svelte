@@ -3,8 +3,7 @@
   import Dashboard from "$lib/ui/dashboard/dashboard.svelte";
 </script>
 
-{#if $loading}
-  loading...
-{:else}
+landing page:
+
   <Dashboard />
-{/if}
+
