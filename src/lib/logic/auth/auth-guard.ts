@@ -7,14 +7,14 @@ import { page } from '$app/stores';
 import { loading } from "../loading/loading.state";
 
 export const guard = () => {
-    if (isExcluded(
-        '/about',
-        '/about/changelog',
-    )) {
-        return;
-    }
-    loading.set(true);
     if (browser) {
+        if (isExcluded(
+            '/about',
+            '/about/changelog',
+        )) {
+            return;
+        }
+        loading.set(true);
         if (!get(AuthState.isAuthenticated)) {
             AuthService.get()
                 .tryLocalAuthentication()
