@@ -7,18 +7,21 @@
   import { BalanceFacade } from "$lib/logic/database/facade/balance.facade";
   import type { Balance } from "$lib/logic/model/balance";
   import { Chart } from "chart.js";
+  import { browser } from "$app/environment";
 
   let transactions: Readable<Balance[]>;
-
-  const isDbReady = BalanceFacade.get().then(async (facade) => {
-    transactions = facade.dailyState;
-  });
+  let isDbReady: Promise<boolean | void>;
+  if (browser) {
+    isDbReady = BalanceFacade.get().then(async (facade) => {
+      transactions = facade.dailyState;
+    });
+  }
 
   // init chart
   onMount(async () => {
     await isDbReady;
     var config = {
-      type: 'line',
+      type: "line",
       data: {
         datasets: [
           {
@@ -28,12 +31,12 @@
       },
       options: {
         parsing: {
-          xAxisKey: 'date',
-          yAxisKey: 'amount',
+          xAxisKey: "date",
+          yAxisKey: "amount",
         },
       },
     };
-    const ctx = 'line-chart';
+    const ctx = "line-chart";
     const chart = new Chart(ctx, config as any);
   });
 </script>
