@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   // library that creates chart objects in page
-  import Chart, { type ChartItem } from "chart.js/auto";
   import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
   import type { Transaction } from "$lib/logic/model/transaction";
   import { type Writable, get, type Readable } from "svelte/store";
   import { BalanceFacade } from "$lib/logic/database/facade/balance.facade";
   import type { Balance } from "$lib/logic/model/balance";
+  import { Chart } from "chart.js";
 
   let transactions: Readable<Balance[]>;
 
