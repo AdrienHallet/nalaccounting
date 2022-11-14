@@ -1,23 +1,22 @@
-<script>
-  import { goto } from "$app/navigation";
-
-  import { AuthService } from "$lib/logic/auth/auth.service";
-  import { AuthState } from "$lib/logic/auth/auth.state";
+<script lang="ts">
   import { fade } from "svelte/transition";
+  import EllipsisVertical from "../shared/icon/ellipsis-vertical.svelte";
 
-  let userState = AuthState.userState;
-  let authService = AuthService.get();
   let expanded = false;
 
-  let signOut = () => {
-    goto("/login", { replaceState: true });
-    expanded = false;
-    authService.signOut();
-  };
+  const toggleDropdown = () => {
+    console.log("toggle")
+    expanded = !expanded;
+  }
 </script>
 
-<div class="relative p-1 rounded-full cursor-pointer bg-zinc-700 hover:bg-zinc-300 flex" on:click={() => (expanded = !expanded)}>
-  <img src="{$userState?.avatar_url}" alt="avatar" class="h-6 max-w-none">
+<div class="cursor-pointer" />
+
+<div
+  class="relative p-1 rounded-full cursor-pointer hover:bg-zinc-700 flex"
+  on:click={toggleDropdown}
+>
+  <EllipsisVertical />
   {#if expanded}
     <div class="z-20">
       <div
@@ -33,12 +32,11 @@
       >
         <div class="py-1" role="none">
           <a
-            on:click={signOut}
-            href="/#"
+            href="/transactions"
             class="text-gray-700 block px-4 py-2 text-sm"
             role="menuitem"
             tabindex="-1"
-            id="menu-item-0">Sign out</a
+            id="menu-item-0">Transactions</a
           >
         </div>
       </div>
