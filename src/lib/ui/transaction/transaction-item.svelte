@@ -55,7 +55,7 @@
 <tr class={isEditing ? editingClasses : ""} on:click={setEditing}>
   <td class="w-2/12">
     <input
-      class="bg-zinc-700"
+      class="bg-transparent"
       type="date"
       bind:value={transaction.date}
       readonly={!isEditing}
@@ -72,7 +72,7 @@
       on:focus={setEditing}
     />
     <input
-      class="bg-zinc-700"
+      class="bg-transparent"
       bind:value={displayValue}
       step="any"
       type="number"
@@ -82,7 +82,7 @@
   </td>
   <td class="w-7/12">
     <input
-      class="bg-zinc-700 w-full text-ellipsis"
+      class="bg-transparent w-full text-ellipsis"
       bind:value={transaction.title}
       readonly={!isEditing}
       on:focus={setEditing}

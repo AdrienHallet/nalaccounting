@@ -29,7 +29,7 @@
   Loading ...
 {:then}
   <div
-    class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-zinc-700 text-zinc-200"
+    class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded text-zinc-200"
   >
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">

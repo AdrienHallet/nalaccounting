@@ -8,15 +8,12 @@
   guard();
 </script>
 
-<div class="flex flex-col justify-items-center min-h-screen">
-  <div class="flex-initial">
-    <Header />
-  </div>
-  <div class="container mx-auto px-2">
-    <slot />
-  </div>
-  
-  <div class="relative bottom-0 left-0 right-0 mt-auto">
-    <Footer />
-  </div>
+<Header />
+
+<div class="container mx-auto px-2">
+  <slot />
+</div>
+
+<div class="relative bottom-0 left-0 right-0 mt-auto">
+  <Footer />
 </div>
