@@ -9,7 +9,7 @@ export class BalanceFacade {
     public dailyState: Readable<Balance[]>;
 
     private constructor(
-        transactionFacade: TransactionFacade
+        private transactionFacade: TransactionFacade
     ) {
         this.dailyState = derived(transactionFacade.getStore(), dailyFn);
     }

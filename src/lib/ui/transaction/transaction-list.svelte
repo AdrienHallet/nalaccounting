@@ -11,7 +11,6 @@
   const isDbReady = TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
     transactions = facade.getStore();
-    await facade.load();
   });
 
   const addTransaction = () => {

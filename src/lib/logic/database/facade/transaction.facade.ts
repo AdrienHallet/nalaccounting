@@ -20,6 +20,7 @@ export class TransactionFacade {
         if (!TransactionFacade.instance) {
             const transactionService = await TransactionService.get()
             this.instance = new TransactionFacade(transactionService)
+            await this.instance.load();
         }
         return TransactionFacade.instance;
     }
@@ -32,10 +33,7 @@ export class TransactionFacade {
         return this.transactionState.store
     }
 
-    public async load() {
-        const transactions = await this.transactionService.getTransactions();
-        this.transactionState.init(transactions);
-    }
+    
 
     public add(transaction: Transaction) {
         this.transactionService.addOrUpdate(transaction).then(() => {
@@ -58,6 +56,11 @@ export class TransactionFacade {
         })
     }
 
+    private async load() {
+        const transactions = await this.transactionService.getTransactions();
+        this.transactionState.init(transactions);
+    }
+    
     private dirtyData() {
         this.lastChange = new Date();
     }
