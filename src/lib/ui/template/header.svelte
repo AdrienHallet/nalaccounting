@@ -9,7 +9,7 @@
 
 <header class="sticky top-0 z-50 bg-zinc-900">
   <nav
-    class="relative flex flex-wrap items-center justify-between px-2 py-3  mb-3"
+    class="relative flex flex-wrap items-center justify-between px-2 my-3"
   >
     <div
       class="container px-4 mx-auto flex flex-row items-center justify-between"

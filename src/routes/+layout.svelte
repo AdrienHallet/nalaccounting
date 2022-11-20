@@ -10,10 +10,10 @@
 
 <Header />
 
-<div class="container mx-auto px-2">
+<div class="container mx-auto px-2 mt-2">
   <slot />
 </div>
 
-<div class="relative bottom-0 left-0 right-0 mt-auto">
+<div class="mt-auto">
   <Footer />
 </div>
