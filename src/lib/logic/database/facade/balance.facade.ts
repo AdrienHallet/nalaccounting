@@ -32,7 +32,7 @@ const dailyFn = (transactions: Transaction[], set: any) => {
             accumulation.push(last);
             last = new Balance(transaction.date, last.amount);
         }
-        last.amount = Number(last.amount) + Number(transaction.amount || 0); // Todo shouldn't have to cast here
+        last.amount = Number(last.amount) + Number(transaction.amount || 0) / 100; // Todo shouldn't have to cast here
     })
     accumulation.push(last);
     set(accumulation);
