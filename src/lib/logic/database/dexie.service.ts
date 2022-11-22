@@ -29,7 +29,7 @@ export class DexieService extends Dexie {
         await import("dexie-export-import");
         console.log('loading');
         return super.import(blob, {
-            overwriteValues: true,
+            clearTablesBeforeImport: true,
             acceptVersionDiff: true,
         })
     }
