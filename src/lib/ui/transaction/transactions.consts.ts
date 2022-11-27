@@ -1,0 +1,1 @@
+export const TRANSACTIONS_LAYOUT = "grid-cols-[15%_10%_1fr_10%]"

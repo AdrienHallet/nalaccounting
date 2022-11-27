@@ -3,6 +3,7 @@
   import type { Transaction, ITransaction } from "$lib/logic/model/transaction";
   import type { Writable } from "svelte/store";
   import Button from "../shared/button.svelte";
+  import VirtualScroll from "../shared/virtual/virtual-scroll.svelte";
   import TransactionItem from "./transaction-item.svelte";
 
   let transactionFacade: TransactionFacade;
@@ -27,9 +28,7 @@
 {#await isDbReady}
   Loading ...
 {:then}
-  <div
-    class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded text-zinc-200"
-  >
+  <div class="relative min-w-0 break-words w-full mb-6 rounded text-zinc-200 grid overflow-hidden grid-rows-[200px_minmax(0, 500px)]">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -40,23 +39,10 @@
         </div>
       </div>
     </div>
-    <div class="block w-full overflow-x-auto px-2">
-      <!-- Projects table -->
-      <table class="items-center w-full bg-transparent border-collapse">
-        <thead>
-          <tr>
-            <th class="py-2 border border-x-0 text-left"> Date </th>
-            <th class="py-2 border border-x-0 text-left"> Amount </th>
-            <th class="py-2 border border-x-0 text-left"> Title </th>
-            <th class="py-2 border border-x-0 text-left"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each $transactions as transaction}
-            <TransactionItem {transaction} />
-          {/each}
-        </tbody>
-      </table>
+    <div class="overflow-x-auto px-2 h-[75vh]">
+      <VirtualScroll items={$transactions} let:item>
+        <TransactionItem transaction={item} />
+      </VirtualScroll>
     </div>
   </div>
 {/await}

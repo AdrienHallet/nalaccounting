@@ -1,6 +1,5 @@
 import type { ITransaction, } from "$lib/logic/model/transaction";
 import { liveQuery, type Observable } from "dexie";
-import databaseLoader from "../database-retriever";
 import { DexieService } from "../dexie.service";
 
 export class TransactionService {
@@ -27,7 +26,15 @@ export class TransactionService {
     }
 
     public async getTransactions(): Promise<ITransaction[]> {
-        return await this.db.transactions.orderBy('date').reverse().toArray();
+        return await 
+        this.db.transactions.orderBy('date').reverse().toArray()
+        .then((val) => {
+            return val.map((item) => {
+                item.amount = Math.floor(Math.random() * 1000);
+                item.title = "Anonymized";
+                return item;
+            });
+        });
     }
 
     public addTransaction(): void {
