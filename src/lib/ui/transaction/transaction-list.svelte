@@ -28,7 +28,7 @@
 {#await isDbReady}
   Loading ...
 {:then}
-  <div class="relative min-w-0 break-words w-full mb-6 rounded text-zinc-200 grid overflow-hidden grid-rows-[200px_minmax(0, 500px)]">
+  <div class="relative min-w-0 break-words w-full mb-6 rounded text-zinc-200">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">

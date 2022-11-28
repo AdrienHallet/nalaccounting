@@ -23,8 +23,8 @@ export class BalanceFacade {
     }
 }
 
-const dailyFn = (transactions: Transaction[], set: any) => {
-    transactions.sort((a, b) => a.date.localeCompare(b.date))
+const dailyFn = (origin: Transaction[], set: (value: Balance[]) => void) => {
+    const transactions = [...origin].sort((a, b) => a.date.localeCompare(b.date))
     const accumulation: Balance[] = [];
     let last: Balance = new Balance(transactions[0].date, 0);
     transactions.forEach(transaction => {

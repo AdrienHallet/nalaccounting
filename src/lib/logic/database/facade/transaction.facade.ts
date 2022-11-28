@@ -1,9 +1,12 @@
 import type { Transaction } from "$lib/logic/model/transaction";
+import { AsyncLock } from "$lib/logic/utils/async-lock";
 import { TransactionService } from "../service/transaction.service";
 import { ArrayState } from "../state/generic.state";
 
 export class TransactionFacade {
     private static instance: TransactionFacade;
+    private static lock = new AsyncLock();
+
     private transactionService: TransactionService;
     private transactionState: ArrayState<Transaction>;
     private lastChange: Date | null;
@@ -17,11 +20,14 @@ export class TransactionFacade {
     }
 
     public static async get() {
+        await this.lock.promise
+        this.lock.enable();
         if (!TransactionFacade.instance) {
             const transactionService = await TransactionService.get()
             this.instance = new TransactionFacade(transactionService)
             await this.instance.load();
         }
+        this.lock.disable();
         return TransactionFacade.instance;
     }
 
