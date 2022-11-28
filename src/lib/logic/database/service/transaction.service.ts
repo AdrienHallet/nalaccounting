@@ -27,14 +27,15 @@ export class TransactionService {
 
     public async getTransactions(): Promise<ITransaction[]> {
         return await 
-        this.db.transactions.orderBy('date').reverse().toArray()
-        .then((val) => {
-            return val.map((item) => {
-                item.amount = Math.floor(Math.random() * 1000);
-                item.title = "Anonymized";
-                return item;
-            });
-        });
+        this.db.transactions.orderBy('date').reverse().toArray();
+        // Anonymize bout
+        // .then((val) => {
+        //     return val.map((item) => {
+        //         item.amount = Math.floor(Math.random() * 1000);
+        //         item.title = "Anonymized";
+        //         return item;
+        //     });
+        // });
     }
 
     public addTransaction(): void {
