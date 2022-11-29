@@ -132,11 +132,11 @@
   on:scroll={handle_scroll}
   class="h-full min-w-[500px]"
 >
-<div class="grid sticky top-0 overflow-hidden {TRANSACTIONS_LAYOUT} auto-rows-auto bg-zinc-800">
-    <div class="py-2 border border-x-0 text-left"> Date </div>
-    <div class="py-2 border border-x-0 text-left"> Amount </div>
-    <div class="py-2 border border-x-0 text-left"> Title </div>
-    <div class="py-2 border border-x-0 text-left"></div>
+<div class="sticky top-0 overflow-hidden {TRANSACTIONS_LAYOUT} auto-rows-auto bg-zinc-800 border border-x-0">
+    <div class="py-2 text-left"> Date </div>
+    <div class="py-2 text-left"> Amount </div>
+    <div class="py-2 text-left"> Title </div>
+    <div class="py-2 text-left"></div>
     </div>
   <viewport-contents
     bind:this={contents}

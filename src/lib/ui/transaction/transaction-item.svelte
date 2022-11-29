@@ -11,7 +11,7 @@
   let transactionFacade: TransactionFacade;
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
-  let displayValue: any = (transaction.amount || 0) / 100;
+  let displayValue: number = (transaction.amount || 0) / 100;
 
   TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
@@ -50,20 +50,24 @@
     transactionFacade.delete(transaction);
   };
 
-  const editingClasses = `border-2 border-gray-100 bg-zinc-600 grid ${TRANSACTIONS_LAYOUT}`;
+  const editingClasses = `border-2 border-gray-100 bg-zinc-600 ${TRANSACTIONS_LAYOUT}`;
 </script>
 
-<span class={isEditing ? editingClasses : `grid ${TRANSACTIONS_LAYOUT}`} on:click={setEditing}>
-  <div class="">
+<span
+  class={isEditing ? editingClasses : `${TRANSACTIONS_LAYOUT}`}
+  on:click={setEditing}
+  on:keydown={setEditing}
+>
+  <div class="w-full">
     <input
-      class="bg-transparent"
+      class="bg-transparent w-full"
       type="date"
       bind:value={transaction.date}
       readonly={!isEditing}
       on:focus={setEditing}
     />
   </div>
-  <div class="">
+  <div class="w-full">
     <input
       class="hidden"
       bind:value={transaction.amount}
@@ -73,12 +77,13 @@
       on:focus={setEditing}
     />
     <input
-      class="bg-transparent"
+      class="bg-transparent w-full text-right"
       bind:value={displayValue}
       step="any"
       type="number"
       readonly={!isEditing}
       on:focus={setEditing}
+      on:focusout={(event) => event.currentTarget.value = parseFloat(event.currentTarget.value).toFixed(2)}
     />
   </div>
   <div class="">
@@ -92,6 +97,7 @@
   <div class="text-center">
     <svg
       on:click={onClickRemove}
+      on:keydown={onClickRemove}
       xmlns="http://www.w3.org/2000/svg"
       class="h-6 inline-block cursor-pointer"
       fill="none"
