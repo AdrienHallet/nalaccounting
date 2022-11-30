@@ -1,35 +1,35 @@
 <script lang="ts">
-  import { TRANSACTIONS_LAYOUT } from "$lib/ui/transaction/transactions.consts";
   import { onMount, tick } from "svelte";
 
   // props
   export let items: any[];
+  export let classes: string;
 
   // read-only, but visible to consumers via bind:start
   export let start = 0;
   export let end = 0;
 
   // local state
-  let height_map = [];
-  let rows;
-  let viewport;
-  let contents;
+  let height_map: number[] = [];
+  let rows: HTMLCollectionOf<HTMLElement>;
+  let viewport: HTMLElement;
+  let contents: HTMLElement;
   let viewport_height = 0;
-  let visible;
-  let mounted;
+  let visibleItem: any[];
+  let mounted = false;
 
   let top = 0;
   let bottom = 0;
-  let average_height;
+  let average_height: number;
 
-  $: visible = items.slice(start, end).map((data, i) => {
+  $: visibleItem = items.slice(start, end).map((data, i) => {
     return { index: i + start, data };
   });
 
   // whenever `items` changes, invalidate the current heightmap
   $: if (mounted) refresh(items, viewport_height);
 
-  async function refresh(items, viewport_height) {
+  async function refresh(items: any, viewport_height: number) {
     const { scrollTop } = viewport;
 
     await tick(); // wait until the DOM is up to date
@@ -45,7 +45,7 @@
         await tick(); // render the newly visible row
         row = rows[i - start];
       }
-
+      
       const row_height = (height_map[i] = row.offsetHeight);
       content_height += row_height;
       i += 1;
@@ -121,7 +121,7 @@
 
   // trigger initial refresh
   onMount(() => {
-    rows = contents.getElementsByTagName("viewport-row");
+    rows = contents.getElementsByTagName("viewport-row") as HTMLCollectionOf<HTMLElement>;
     mounted = true;
   });
 </script>
@@ -130,21 +130,16 @@
   bind:this={viewport}
   bind:offsetHeight={viewport_height}
   on:scroll={handle_scroll}
-  class="h-full min-w-[500px]"
+  class="h-full {classes}"
 >
-<div class="sticky top-0 overflow-hidden {TRANSACTIONS_LAYOUT} auto-rows-auto bg-zinc-800 border border-x-0">
-    <div class="py-2 text-left"> Date </div>
-    <div class="py-2 text-left"> Amount </div>
-    <div class="py-2 text-left"> Title </div>
-    <div class="py-2 text-left"></div>
-    </div>
+  <slot name="header"/>
   <viewport-contents
     bind:this={contents}
     style="padding-top: {top}px; padding-bottom: {bottom}px;"
   >
-    {#each visible as row (row.index)}
+    {#each visibleItem as row (row.index)}
       <viewport-row>
-        <slot item={row.data}>Missing template</slot>
+        <slot name="row" item={row.data}>Missing template</slot>
       </viewport-row>
     {/each}
   </viewport-contents>

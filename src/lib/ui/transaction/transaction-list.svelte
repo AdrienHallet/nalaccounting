@@ -5,6 +5,7 @@
   import Button from "../shared/button.svelte";
   import VirtualScroll from "../shared/virtual/virtual-scroll.svelte";
   import TransactionItem from "./transaction-item.svelte";
+  import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
 
   let transactionFacade: TransactionFacade;
   let transactions: Writable<Transaction[]>;
@@ -28,7 +29,7 @@
 {#await isDbReady}
   Loading ...
 {:then}
-  <div class="relative min-w-0 break-words w-full mb-6 rounded text-zinc-200">
+  <div class="relative break-words w-full mb-6 rounded text-zinc-200">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -40,8 +41,17 @@
       </div>
     </div>
     <div class="overflow-x-auto px-2 h-[75vh]">
-      <VirtualScroll items={$transactions} let:item>
-        <TransactionItem transaction={item} />
+      <VirtualScroll items={$transactions} classes="min-w-[500px]">
+        <div
+          class="sticky top-0 overflow-hidden {TRANSACTIONS_LAYOUT} auto-rows-auto bg-zinc-800 border border-x-0"
+          slot="header"
+        >
+          <div class="py-2 text-left">Date</div>
+          <div class="py-2 text-left">Amount</div>
+          <div class="py-2 text-left">Title</div>
+          <div class="py-2 text-left" />
+        </div>
+        <TransactionItem slot="row" let:item transaction={item}  />
       </VirtualScroll>
     </div>
   </div>
