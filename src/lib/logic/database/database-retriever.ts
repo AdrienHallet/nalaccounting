@@ -15,6 +15,12 @@ export default async (): Promise<[blob: Blob, sha: string] | never[]> => {
             }
             try {
                 const content = await GithubApi.getContent(user.login, DATA_REPO_NAME);
+                if (content.length > 1) {
+                    throw new Error('You tinkered with the source repository didn\'t you?');
+                }
+                if (content.length < 1) {
+                    reject([]);
+                }
                 const gitBlob = await GithubApi.getBlob(content[0].git_url);
                 const blob = await base64ToBlob(gitBlob.content);
                 localStorage.setItem(LOCAL_SHA, gitBlob.sha);

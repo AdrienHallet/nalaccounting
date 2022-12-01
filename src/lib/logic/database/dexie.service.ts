@@ -19,8 +19,17 @@ export class DexieService extends Dexie {
         if (!DexieService.instance) {
             console.log("Creating DB service");
             DexieService.instance = new DexieService();
-            const [blob, _] = await databaseLoader();
-            await DexieService.instance.load(blob);
+            try {
+                const [blob, _] = await databaseLoader();
+                await DexieService.instance.load(blob);
+            } catch (e: any) {
+                // Todo fix this atrocity
+                if (e.length != null && e.length === 0) {
+                    return DexieService.instance;
+                }
+                throw e;
+            }
+            
         }
         return DexieService.instance;
     }

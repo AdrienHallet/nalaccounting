@@ -43,7 +43,7 @@ export class TransactionFacade {
 
     public add(transaction: Transaction) {
         this.transactionService.addOrUpdate(transaction).then(() => {
-            this.transactionState.add(transaction);
+            this.transactionState.prepend(transaction);
             this.dirtyData();
         })
     }

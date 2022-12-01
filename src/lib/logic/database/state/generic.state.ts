@@ -8,9 +8,9 @@ export class ArrayState<T extends {id?: number}> {
         this.store.update(() => items);
     }
 
-    public add = (added: T) => {
+    public prepend = (added: T) => {
         this.store.update(items => {
-            return [...items, added];
+            return [added, ...items];
         });
     }
 

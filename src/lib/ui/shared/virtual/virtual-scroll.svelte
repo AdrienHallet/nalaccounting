@@ -22,6 +22,15 @@
   let bottom = 0;
   let average_height: number;
 
+  // Public API
+  export function scroller() {
+    viewport.scrollTo(0, 0)
+  }
+
+  export function slice() {
+    refresh(items, viewport_height);
+  }
+
   $: visibleItem = items.slice(start, end).map((data, i) => {
     return { index: i + start, data };
   });
@@ -132,6 +141,7 @@
   on:scroll={handle_scroll}
   class="h-full {classes}"
 >
+  
   <slot name="header"/>
   <viewport-contents
     bind:this={contents}

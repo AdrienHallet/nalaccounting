@@ -9,6 +9,7 @@
 
   let transactionFacade: TransactionFacade;
   let transactions: Writable<Transaction[]>;
+  let transactionVScroll: VirtualScroll;
 
   const isDbReady = TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
@@ -16,6 +17,7 @@
   });
 
   const addTransaction = () => {
+     
     const date = new Date();
     const stringDate = date.toISOString().split("T")[0];
     transactionFacade.add({
@@ -23,6 +25,11 @@
       title: "",
       amount: "",
     } as unknown as ITransaction);
+    if (transactionVScroll.scroller != null && transactionVScroll.slice != null) {
+      transactionVScroll.scroller();
+      transactionVScroll.slice();
+    }   
+    
   };
 </script>
 
@@ -41,7 +48,11 @@
       </div>
     </div>
     <div class="overflow-x-auto px-2 h-[75vh]">
-      <VirtualScroll items={$transactions} classes="min-w-[500px]">
+      <VirtualScroll
+        bind:this={transactionVScroll}
+        items={$transactions}
+        classes="min-w-[500px]"
+      >
         <div
           class="sticky top-0 overflow-hidden {TRANSACTIONS_LAYOUT} auto-rows-auto bg-zinc-800 border border-x-0"
           slot="header"
@@ -51,7 +62,7 @@
           <div class="py-2 text-left">Title</div>
           <div class="py-2 text-left" />
         </div>
-        <TransactionItem slot="row" let:item transaction={item}  />
+        <TransactionItem slot="row" let:item transaction={item} />
       </VirtualScroll>
     </div>
   </div>

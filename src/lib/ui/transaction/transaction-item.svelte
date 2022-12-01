@@ -6,32 +6,45 @@
   import { Transaction, type ITransaction } from "$lib/logic/model/transaction";
   import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
+  import { afterUpdate } from "svelte";
 
   export let transaction: ITransaction;
   let transactionFacade: TransactionFacade;
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
-  let displayValue: number = (transaction.amount || 0) / 100;
+  let displayValue: string = ((transaction.amount || 0) / 100).toFixed(2);
 
   TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
   });
 
-  // Update transaction on change
-  $: updateTransaction();
   const updateTransaction = () => {
+    if (transactionFacade == null) {
+      return;
+    }
     if (!originalTransaction.compare(transaction)) {
       transactionFacade.update(transaction);
       originalTransaction = new Transaction(transaction);
     }
   };
 
-  let initialized = false;
-  $: displayValue, updateDisplay();
+  $: transaction, transactionChange();
+  const transactionChange = () => {
+    console.log(transaction);
+    if (transaction.id != originalTransaction.id) {
+      originalTransaction = new Transaction(transaction);
+      displayValue = ((transaction.amount || 0) / 100).toFixed(2);
+    } else {
+      updateTransaction()
+    }
+    
+  }
 
-  const updateDisplay = () => {
+  let initialized = false;
+
+  const updateAmount = () => {
     if (initialized) {
-      transaction.amount = displayValue * 100;
+      transaction.amount = Math.round(parseFloat(displayValue) * 100);
       updateTransaction();
     } else {
       initialized = true;
@@ -84,6 +97,7 @@
       readonly={!isEditing}
       on:focus={setEditing}
       on:focusout={(event) => event.currentTarget.value = parseFloat(event.currentTarget.value).toFixed(2)}
+      on:input={updateAmount}
     />
   </div>
   <div class="">
