@@ -1,0 +1,4 @@
+export enum LOADING_COMPONENT {
+    AUTHENTICATION,
+    TRANSACTIONS,
+}

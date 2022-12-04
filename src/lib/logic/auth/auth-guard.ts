@@ -4,7 +4,8 @@ import { get } from "svelte/store";
 import { AuthService } from "./auth.service";
 import { AuthState } from "./auth.state";
 import { page } from '$app/stores';
-import { loading } from "../loading/loading.state";
+import { setLoadingComponent } from "../loading/loading.state";
+import { LOADING_COMPONENT } from "../loading/loading.enum";
 
 export const guard = () => {
     if (browser) {
@@ -14,7 +15,7 @@ export const guard = () => {
         )) {
             return;
         }
-        loading.set(true);
+        setLoadingComponent(LOADING_COMPONENT.AUTHENTICATION, true);
         if (!get(AuthState.isAuthenticated)) {
             AuthService.get()
                 .tryLocalAuthentication()
@@ -32,7 +33,7 @@ export const guard = () => {
 };
 
 const onSuccessfulAuthentication = () => {
-    loading.set(false);
+    setLoadingComponent(LOADING_COMPONENT.AUTHENTICATION, false);
 };
 
 const isExcluded = (...excluded: string[]) => {

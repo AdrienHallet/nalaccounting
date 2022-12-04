@@ -6,7 +6,6 @@
   import { Transaction, type ITransaction } from "$lib/logic/model/transaction";
   import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
-  import { afterUpdate } from "svelte";
 
   export let transaction: ITransaction;
   let transactionFacade: TransactionFacade;
@@ -30,7 +29,6 @@
 
   $: transaction, transactionChange();
   const transactionChange = () => {
-    console.log(transaction);
     if (transaction.id != originalTransaction.id) {
       originalTransaction = new Transaction(transaction);
       displayValue = ((transaction.amount || 0) / 100).toFixed(2);

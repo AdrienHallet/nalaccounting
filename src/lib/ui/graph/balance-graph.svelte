@@ -4,17 +4,10 @@
   import { BalanceFacade } from "$lib/logic/database/facade/balance.facade";
   import type { Balance } from "$lib/logic/model/balance";
   import { Chart, registerables } from "chart.js";
-  import { browser } from "$app/environment";
-  import { redirect } from "@sveltejs/kit";
   import colors from 'tailwindcss/colors';
 
-  let balance: Readable<Balance[]>;
+  let balance: Readable<Balance[]> = BalanceFacade.get().dailyState;
   let isDbReady: Promise<boolean | void>;
-  if (browser) {
-    isDbReady = BalanceFacade.get().then(async (facade) => {
-      balance = facade.dailyState;
-    });
-  }
 
   // init chart
   onMount(async () => {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
+  import { transactionsState } from "$lib/logic/database/state/transactions.state";
   import type { Transaction, ITransaction } from "$lib/logic/model/transaction";
   import type { Writable } from "svelte/store";
   import Button from "../shared/button.svelte";
@@ -8,12 +9,12 @@
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
 
   let transactionFacade: TransactionFacade;
-  let transactions: Writable<Transaction[]>;
   let transactionVScroll: VirtualScroll;
+  let transactions = transactionsState.store;
 
   const isDbReady = TransactionFacade.get().then(async (facade) => {
     transactionFacade = facade;
-    transactions = facade.getStore();
+
   });
 
   const addTransaction = () => {

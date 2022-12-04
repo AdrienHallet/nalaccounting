@@ -1,7 +1,7 @@
 import { Balance } from "$lib/logic/model/balance";
 import type { Transaction } from "$lib/logic/model/transaction";
 import { derived, type Readable } from "svelte/store";
-import { TransactionFacade } from "./transaction.facade";
+import { transactionsState } from "../state/transactions.state";
 
 export class BalanceFacade {
     private static instance: BalanceFacade;
@@ -9,21 +9,24 @@ export class BalanceFacade {
     public dailyState: Readable<Balance[]>;
 
     private constructor(
-        private transactionFacade: TransactionFacade
     ) {
-        this.dailyState = derived(transactionFacade.getStore(), dailyFn);
+        this.dailyState = derived(transactionsState.store, dailyFn);
     }
 
-    public static async get(): Promise<BalanceFacade> {
+    public static get(): BalanceFacade {
         if (!BalanceFacade.instance) {
-            const transactionFacade = await TransactionFacade.get()
-            this.instance = new BalanceFacade(transactionFacade)
+            this.instance = new BalanceFacade()
         }
         return BalanceFacade.instance;
     }
 }
 
 const dailyFn = (origin: Transaction[], set: (value: Balance[]) => void) => {
+    if (!origin) {
+        set([]);
+        return;
+    }
+
     const transactions = [...origin].sort((a, b) => a.date.localeCompare(b.date))
     const accumulation: Balance[] = [];
     let last: Balance = new Balance(transactions[0].date, 0);
