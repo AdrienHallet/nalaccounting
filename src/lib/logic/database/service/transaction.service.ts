@@ -3,7 +3,7 @@ import { liveQuery, type Observable } from "dexie";
 import { DexieService } from "../dexie.service";
 
 export class TransactionService {
-    private static instance: Promise<TransactionService>;
+    private static instance: TransactionService;
 
     public db: DexieService;
 
@@ -11,10 +11,10 @@ export class TransactionService {
         this.db = dexieService;
     }
 
-    public static async get(): Promise<TransactionService> {
+    public static get(): TransactionService {
         if(!TransactionService.instance) {
-            const dexieService = await DexieService.get();
-            TransactionService.instance = Promise.resolve(new TransactionService(dexieService));
+            const dexieService = DexieService.get();
+            TransactionService.instance = new TransactionService(dexieService);
         }
         return TransactionService.instance;
     }

@@ -1,12 +1,10 @@
 import type { Transaction } from "$lib/logic/model/transaction";
-import { AsyncLock } from "$lib/logic/utils/async-lock";
 import { TransactionService } from "../service/transaction.service";
 import { transactionsState } from "../state/transactions.state";
 
 export class TransactionFacade {
 
     private static instance: TransactionFacade;
-    private static lock = new AsyncLock();
 
     private transactionService: TransactionService;
     
@@ -19,15 +17,12 @@ export class TransactionFacade {
         this.lastChange = null;
     }
 
-    public static async get() {
-        await this.lock.promise
-        this.lock.enable();
+    public static get() {
         if (!TransactionFacade.instance) {
-            const transactionService = await TransactionService.get()
+            const transactionService = TransactionService.get()
             this.instance = new TransactionFacade(transactionService)
-            await this.instance.load();
+            this.instance.load();
         }
-        this.lock.disable();
         return TransactionFacade.instance;
     }
 
@@ -57,8 +52,13 @@ export class TransactionFacade {
     }
 
     private async load() {
-        const transactions = await this.transactionService.getTransactions();
-        transactionsState.init(transactions);
+        try {
+            const transactions = await this.transactionService.getTransactions();
+            transactionsState.init(transactions);
+        } catch (error) {
+            console.error(error);
+        }
+        
     }
     
     private dirtyData() {

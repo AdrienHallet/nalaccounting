@@ -10,7 +10,6 @@
 </script>
 
 {#if !$isLoading}
-{$isLoading}
 <Header />
 
 <div class="container mx-auto px-2 mt-2">
@@ -21,6 +20,6 @@
   <Footer />
 </div>
 {:else}
-  Lodagins...
+  Loading
 {/if}
 

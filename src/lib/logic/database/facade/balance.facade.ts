@@ -22,7 +22,7 @@ export class BalanceFacade {
 }
 
 const dailyFn = (origin: Transaction[], set: (value: Balance[]) => void) => {
-    if (!origin) {
+    if (!origin || origin.length < 1) {
         set([]);
         return;
     }

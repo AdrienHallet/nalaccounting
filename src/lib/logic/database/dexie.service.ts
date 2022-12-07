@@ -15,21 +15,14 @@ export class DexieService extends Dexie {
         });
     }
 
-    public static async get(): Promise<DexieService> {
+    public static get(): DexieService {
         if (!DexieService.instance) {
             console.log("Creating DB service");
             DexieService.instance = new DexieService();
-            try {
-                const [blob, _] = await databaseLoader();
-                await DexieService.instance.load(blob);
-            } catch (e: any) {
-                // Todo fix this atrocity
-                if (e.length != null && e.length === 0) {
-                    return DexieService.instance;
-                }
-                throw e;
-            }
-            
+            databaseLoader().then(
+                ([blob, _]) => DexieService.instance.load(blob),
+                (reason) => console.log(reason),
+            )            
         }
         return DexieService.instance;
     }

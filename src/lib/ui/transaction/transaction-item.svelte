@@ -8,14 +8,10 @@
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
 
   export let transaction: ITransaction;
-  let transactionFacade: TransactionFacade;
+  let transactionFacade: TransactionFacade = TransactionFacade.get();
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
   let displayValue: string = ((transaction.amount || 0) / 100).toFixed(2);
-
-  TransactionFacade.get().then(async (facade) => {
-    transactionFacade = facade;
-  });
 
   const updateTransaction = () => {
     if (transactionFacade == null) {
@@ -35,7 +31,6 @@
     } else {
       updateTransaction()
     }
-    
   }
 
   let initialized = false;
