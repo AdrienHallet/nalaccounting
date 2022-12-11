@@ -3,4 +3,4 @@ import { writable, type Writable } from "svelte/store";
 
 export const transactions: Writable<Transaction[]> = writable();
 
-export const transactionsPristine = writable(true);
+export const transactionsChange = writable(false);

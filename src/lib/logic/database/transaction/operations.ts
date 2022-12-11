@@ -1,23 +1,23 @@
 import type { Transaction } from "$lib/logic/model/transaction";
 import { init, prepend, remove, update } from "../common/operations";
-import { transactions, transactionsPristine } from "./transactions.state";
+import { transactions, transactionsChange } from "./transactions.state";
 
 export const setTransactions = (toSet: Transaction[]) => {
     init(transactions, toSet);
-    transactionsPristine.set(true);
+    transactionsChange.set(false);
 }
 
 export const addTransaction = (toAdd: Transaction) => {
     prepend(transactions, toAdd)
-    transactionsPristine.set(false);
+    transactionsChange.set(true);
 }
 
 export const updateTransaction = (toUpdate: Transaction) => {
     update(transactions, toUpdate);
-    transactionsPristine.set(false);
+    transactionsChange.set(true);
 }
 
 export const deleteTransaction = (toDelete: Transaction) => {
     remove(transactions, toDelete);
-    transactionsPristine.set(false);
+    transactionsChange.set(true);
 }
