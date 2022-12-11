@@ -14,6 +14,7 @@
 <div
   class="relative p-1 rounded-full cursor-pointer hover:bg-zinc-700 flex"
   on:click={toggleDropdown}
+  on:keypress={toggleDropdown}
 >
   <EllipsisVertical />
   {#if expanded}

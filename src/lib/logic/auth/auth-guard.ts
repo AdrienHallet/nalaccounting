@@ -9,12 +9,6 @@ import { LOADING_COMPONENT } from "../loading/loading.enum";
 
 export const guard = () => {
     if (browser) {
-        if (isExcluded(
-            '/about',
-            '/about/changelog',
-        )) {
-            return;
-        }
         setLoadingComponent(LOADING_COMPONENT.AUTHENTICATION, true);
         if (!get(AuthState.isAuthenticated)) {
             AuthService.get()
@@ -23,6 +17,12 @@ export const guard = () => {
                     if (token) {
                         onSuccessfulAuthentication();
                     } else {
+                        if (isExcluded(
+                            '/about',
+                            '/about/changelog',
+                        )) {
+                            return;
+                        }
                         goto("/login");
                     }
                 });

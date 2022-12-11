@@ -1,5 +1,4 @@
 import { marked } from "marked";
-import { stringify } from "postcss";
 
 export interface ChangelogEntry {
     date: Date,

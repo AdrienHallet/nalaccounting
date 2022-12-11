@@ -11,10 +11,9 @@
 
   const onTransactionsChange = () => {
     if ($transactionsChange) {
-      console.log('has changes');
       processChanges();
     }
-  }
+  };
 
   let exportTimeout: NodeJS.Timer;
   const processChanges = () => {
@@ -23,24 +22,27 @@
       clearInterval(exportTimeout);
     }
     exportTimeout = setInterval(exportDatabase, 10000);
-  }
+  };
 
-  const exportDatabase =async () => {
+  const exportDatabase = async () => {
     isProcessing = true;
     await databaseExporter();
-    console.log('fake exporting');
     isProcessing = false;
     isFresh = true;
     clearInterval(exportTimeout);
     transactionsChange.set(false);
-  }
+  };
 
   const togglePolling = () => {
     isPolling = false;
-  }
-  
+  };
 </script>
-<div class="flex items-center cursor-pointer w-6 justify-center hover:border border-zinc-600 rounded-sm" on:click={togglePolling}>
+
+<div
+  class="flex items-center cursor-pointer w-6 justify-center hover:border border-zinc-600 rounded-sm"
+  on:click={togglePolling}
+  on:keypress={togglePolling}
+>
   {#if isPolling}
     {#if isProcessing}
       <div class="text-orange-600 animate-bounce">

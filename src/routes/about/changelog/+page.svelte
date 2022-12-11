@@ -1,9 +1,16 @@
 <script lang="ts">
-  import changelog from "../../../../src/CHANGELOG.md?raw";
   import parser from "$lib/logic/changelog/parser";
+  import { browser } from "$app/environment";
+
+  export let data;
+  let parsedChangelog = []
 
   // Todo can probably only happen once per server startup
-  let parsedChangelog = parser(changelog) || [];
+  if (browser) {
+    console.log(data);
+    parsedChangelog = parser(data.changelog) || [];
+  }
+  
 </script>
 
 <div id=changelog class="grid grid-cols-1 gap-6 lg:gap-8 mx-[10%] py-5">
