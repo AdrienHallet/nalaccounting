@@ -11,6 +11,7 @@
 
   const onTransactionsChange = () => {
     if ($transactionsChange) {
+      console.log('has changes');
       processChanges();
     }
   }
@@ -27,9 +28,11 @@
   const exportDatabase =async () => {
     isProcessing = true;
     await databaseExporter();
+    console.log('fake exporting');
     isProcessing = false;
     isFresh = true;
     clearInterval(exportTimeout);
+    transactionsChange.set(false);
   }
 
   const togglePolling = () => {
