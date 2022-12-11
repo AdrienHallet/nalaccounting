@@ -1,25 +1,18 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
-  import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
-  import { transactionsState } from "$lib/logic/database/state/transactions.state";
+  import { transactions } from "$lib/logic/database/transaction/transactions.state";
+  import { addTransaction } from "$lib/logic/database/transaction/operations";
   import type { ITransaction } from "$lib/logic/model/transaction";
   import Button from "../shared/button.svelte";
   import VirtualScroll from "../shared/virtual/virtual-scroll.svelte";
   import TransactionItem from "./transaction-item.svelte";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
 
-  let transactionFacade: TransactionFacade;
   let transactionVScroll: VirtualScroll;
-  let transactions = transactionsState.store;
 
-  if (browser) {
-    transactionFacade = TransactionFacade.get();
-  }
-
-  const addTransaction = () => {
+  const add = () => {
     const date = new Date();
     const stringDate = date.toISOString().split("T")[0];
-    transactionFacade.add({
+    addTransaction({
       date: stringDate,
       title: "",
       amount: "",
@@ -41,7 +34,7 @@
         <h3 class="font-semibold text-lg">Transactions</h3>
       </div>
       <div>
-        <Button primary on:click={addTransaction}>+ Add</Button>
+        <Button primary on:click={add}>+ Add</Button>
       </div>
     </div>
   </div>

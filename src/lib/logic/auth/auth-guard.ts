@@ -6,6 +6,8 @@ import { AuthState } from "./auth.state";
 import { page } from '$app/stores';
 import { setLoadingComponent } from "../loading/loading.state";
 import { LOADING_COMPONENT } from "../loading/loading.enum";
+import { setTransactions } from "../database/transaction/operations";
+import { getTransactions } from "../database/transaction/queries";
 
 export const guard = () => {
     if (browser) {
@@ -21,18 +23,18 @@ export const guard = () => {
                 .tryLocalAuthentication()
                 .then((token) => {
                     if (token) {
-                        onSuccessfulAuthentication();
+                        onSuccessfulAuthentication(false);
                     } else {
                         goto("/login");
                     }
                 });
         } else {
-            onSuccessfulAuthentication();
+            onSuccessfulAuthentication(true);
         }
     }
 };
 
-const onSuccessfulAuthentication = () => {
+const onSuccessfulAuthentication = async (wasAuthenticated: boolean) => {
     setLoadingComponent(LOADING_COMPONENT.AUTHENTICATION, false);
 };
 

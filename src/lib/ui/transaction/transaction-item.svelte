@@ -4,21 +4,17 @@
 
 <script lang="ts">
   import { Transaction, type ITransaction } from "$lib/logic/model/transaction";
-  import { TransactionFacade } from "$lib/logic/database/facade/transaction.facade";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
+  import { deleteTransaction, updateTransaction } from "$lib/logic/database/transaction/operations";
 
   export let transaction: ITransaction;
-  let transactionFacade: TransactionFacade = TransactionFacade.get();
   let originalTransaction: ITransaction = new Transaction(transaction);
   let isEditing: boolean;
   let displayValue: string = ((transaction.amount || 0) / 100).toFixed(2);
 
-  const updateTransaction = () => {
-    if (transactionFacade == null) {
-      return;
-    }
+  const update = () => {
     if (!originalTransaction.compare(transaction)) {
-      transactionFacade.update(transaction);
+      updateTransaction(transaction);
       originalTransaction = new Transaction(transaction);
     }
   };
@@ -29,7 +25,7 @@
       originalTransaction = new Transaction(transaction);
       displayValue = ((transaction.amount || 0) / 100).toFixed(2);
     } else {
-      updateTransaction()
+      update()
     }
   }
 
@@ -38,7 +34,7 @@
   const updateAmount = () => {
     if (initialized) {
       transaction.amount = Math.round(parseFloat(displayValue) * 100);
-      updateTransaction();
+      update();
     } else {
       initialized = true;
     }
@@ -53,7 +49,7 @@
   };
 
   const onClickRemove = () => {
-    transactionFacade.delete(transaction);
+    deleteTransaction(transaction);
   };
 
   const editingClasses = `border-2 border-gray-100 bg-zinc-600 ${TRANSACTIONS_LAYOUT}`;

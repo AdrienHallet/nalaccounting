@@ -1,9 +1,14 @@
 import Dexie from "dexie";
+import { LOADING_COMPONENT } from "../loading/loading.enum";
+import { setLoadingComponent } from "../loading/loading.state";
 import type { ITransaction } from "../model/transaction";
 import databaseLoader from "./database-retriever";
+import { setTransactions } from "./transaction/operations";
+import { getTransactions } from "./transaction/queries";
+import { transactions } from "./transaction/transactions.state";
 
 export class DexieService extends Dexie {
-    private static instance: DexieService;
+    private static instance: DexieService = this.get();
     transactions!: Dexie.Table<ITransaction, number>;
 
     private constructor() {
@@ -20,7 +25,10 @@ export class DexieService extends Dexie {
             console.log("Creating DB service");
             DexieService.instance = new DexieService();
             databaseLoader().then(
-                ([blob, _]) => DexieService.instance.load(blob),
+                async ([blob, _]) => {
+                    await DexieService.instance.load(blob);
+                    this.initializeStores();
+                },
                 (reason) => console.log(reason),
             )            
         }
@@ -40,6 +48,11 @@ export class DexieService extends Dexie {
         await import("dexie-export-import");
         console.log('exporting');
         return super.export();
+    }
+
+    static async initializeStores() {
+        setTransactions(await getTransactions());
+        setLoadingComponent(LOADING_COMPONENT.TRANSACTIONS, false);
     }
     
 }

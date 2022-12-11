@@ -1,7 +1,7 @@
 import { Balance } from "$lib/logic/model/balance";
 import type { Transaction } from "$lib/logic/model/transaction";
 import { derived, type Readable } from "svelte/store";
-import { transactionsState } from "../state/transactions.state";
+import { transactions } from "../transaction/transactions.state";
 
 export class BalanceFacade {
     private static instance: BalanceFacade;
@@ -10,7 +10,7 @@ export class BalanceFacade {
 
     private constructor(
     ) {
-        this.dailyState = derived(transactionsState.store, dailyFn);
+        this.dailyState = derived(transactions, dailyFn);
     }
 
     public static get(): BalanceFacade {
