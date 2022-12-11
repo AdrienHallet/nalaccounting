@@ -2,9 +2,7 @@ import type { ITransaction } from "$lib/logic/model/transaction";
 import { DexieService } from "../dexie.service";
 
 export const getTransactions = async (): Promise<ITransaction[]> => {
-    const result = await 
-    DexieService.get().transactions.orderBy('date').reverse().toArray();
-    console.log(result);
+    const result = await DexieService.get().transactions.orderBy('date').reverse().toArray();
     return result;
     // Anonymize bout
     // .then((val) => {

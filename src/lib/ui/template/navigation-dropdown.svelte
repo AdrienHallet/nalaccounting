@@ -5,7 +5,6 @@
   let expanded = false;
 
   const toggleDropdown = () => {
-    console.log("toggle")
     expanded = !expanded;
   }
 </script>

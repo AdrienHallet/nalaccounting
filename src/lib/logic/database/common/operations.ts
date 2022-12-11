@@ -1,8 +1,6 @@
 import type { Writable } from "svelte/store";
 
 export const init = <T>(store: Writable<T[]>, items: T[]) => {
-    console.log('updating');
-    console.log(items);
     store.update(() => items);
 }
 

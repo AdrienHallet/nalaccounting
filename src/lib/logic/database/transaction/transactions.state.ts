@@ -1,4 +1,6 @@
-import { writable } from "svelte/store";
+import type { Transaction } from "$lib/logic/model/transaction";
+import { writable, type Writable } from "svelte/store";
 
-export const transactions = writable([]);
+export const transactions: Writable<Transaction[]> = writable();
 
+export const transactionsPristine = writable(true);

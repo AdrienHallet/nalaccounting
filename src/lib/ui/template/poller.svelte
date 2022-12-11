@@ -1,12 +1,19 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { transactions, transactionsPristine } from "$lib/logic/database/transaction/transactions.state";
+  import { isLoading } from "$lib/logic/loading/loading.state";
   import ArrowUp from "../shared/icon/arrow-up.svelte";
 
   let isPolling = false;
   let isProcessing = false;
   let isFresh = true;
 
-  if (browser) {
+  $: $transactions, onDataChange();
+
+  const onDataChange = () => {
+    if ($transactionsPristine) {
+      // Do not do anything when it's pristine
+      return;
+    }
   }
 
   const togglePolling = () => {

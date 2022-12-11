@@ -5,8 +5,6 @@ import type { ITransaction } from "../model/transaction";
 import databaseLoader from "./database-retriever";
 import { setTransactions } from "./transaction/operations";
 import { getTransactions } from "./transaction/queries";
-import { transactions } from "./transaction/transactions.state";
-
 export class DexieService extends Dexie {
     private static instance: DexieService = this.get();
     transactions!: Dexie.Table<ITransaction, number>;
