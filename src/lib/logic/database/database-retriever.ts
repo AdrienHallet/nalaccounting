@@ -1,4 +1,3 @@
-import { get } from "svelte/store";
 import { AuthState } from "../auth/auth.state";
 import { GithubApi } from "../github/github.api";
 import type { IGithubRepo } from "../model/github-repo";

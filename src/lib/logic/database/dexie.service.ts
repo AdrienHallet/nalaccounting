@@ -23,7 +23,7 @@ export class DexieService extends Dexie {
             console.log("Creating DB service");
             DexieService.instance = new DexieService();
             databaseLoader().then(
-                async ([blob, _]) => {
+                async ([blob,]) => {
                     await DexieService.instance.load(blob);
                     this.initializeStores();
                 },

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import parser from "$lib/logic/changelog/parser";
+  import parser, { type ChangelogEntry } from "$lib/logic/changelog/parser";
   import { browser } from "$app/environment";
 
   export let data;
-  let parsedChangelog = []
+  let parsedChangelog: ChangelogEntry[] = []
 
   // Todo can probably only happen once per server startup
   if (browser) {
