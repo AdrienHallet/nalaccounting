@@ -11,16 +11,15 @@ export class DexieService extends Dexie {
 
     private constructor() {
         super("budjet");
-        console.log("INSTANCE");
 
-        this.version(2).stores({
-            transactions: '++id, date, amount, title',
+        this.version(3).stores({
+            transactions: '++id, date, amount, title, categoryId',
+            categories: '++id, name'
         });
     }
 
     public static get(): DexieService {
         if (!DexieService.instance) {
-            console.log("Creating DB service");
             DexieService.instance = new DexieService();
             databaseLoader().then(
                 async ([blob,]) => {
@@ -35,7 +34,6 @@ export class DexieService extends Dexie {
 
     async load(blob: Blob): Promise<void> {
         await import("dexie-export-import");
-        console.log('loading');
         return super.import(blob, {
             clearTablesBeforeImport: true,
             acceptVersionDiff: true,
@@ -44,7 +42,6 @@ export class DexieService extends Dexie {
 
     async export(): Promise<Blob> {
         await import("dexie-export-import");
-        console.log('exporting');
         return super.export();
     }
 

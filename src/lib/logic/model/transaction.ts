@@ -1,8 +1,9 @@
 export interface ITransaction {
     id?: number;
     date: string;
-    amount? :number;
-    title? :string;
+    amount?: number;
+    title?: string;
+    categoryId?: number;
 
     compare(other: ITransaction): boolean;
 }
