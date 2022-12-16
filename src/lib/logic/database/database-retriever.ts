@@ -18,6 +18,7 @@ export default async (): Promise<[blob: Blob, sha: string] | never[]> => {
                     throw new Error('You tinkered with the source repository didn\'t you?');
                 }
                 if (content.length < 1) {
+                    console.log('no database content');
                     reject([]);
                 }
                 const gitBlob = await GithubApi.getBlob(content[0].git_url);

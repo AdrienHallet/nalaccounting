@@ -5,7 +5,7 @@ export interface ITransaction {
     title?: string;
     categoryId?: number;
 
-    compare(other: ITransaction): boolean;
+    equals(other: ITransaction): boolean;
 }
 
 export class Transaction implements ITransaction {
@@ -21,7 +21,7 @@ export class Transaction implements ITransaction {
         this.title = iTransaction.title;
     }
 
-    public compare(other: ITransaction): boolean {
+    public equals(other: ITransaction): boolean {
         return this.id === other.id
             && this.date === other.date
             && this.amount === other.amount

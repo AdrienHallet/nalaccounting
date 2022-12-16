@@ -13,7 +13,7 @@
   let displayValue: string = ((transaction.amount || 0) / 100).toFixed(2);
 
   const update = () => {
-    if (!originalTransaction.compare(transaction)) {
+    if (!originalTransaction.equals(transaction)) {
       updateTransaction(transaction);
       originalTransaction = new Transaction(transaction);
     }

@@ -3,7 +3,9 @@ import { LOADING_COMPONENT } from "./loading.enum";
 
 export const isLoading = writable(new Map<LOADING_COMPONENT, boolean>([
     [LOADING_COMPONENT.AUTHENTICATION, false],
-    [LOADING_COMPONENT.TRANSACTIONS, true], // Application starts empty
+    // Application starts empty
+    [LOADING_COMPONENT.TRANSACTIONS, true], 
+    [LOADING_COMPONENT.CATEGORIES, true], 
 ]));
 
 export const setLoadingComponent = (component: LOADING_COMPONENT, value: boolean) => {

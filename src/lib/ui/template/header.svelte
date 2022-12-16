@@ -23,10 +23,13 @@
         </a>
       </div>
       {#if $isAuthenticated}
-        <div class="flex flex-grow items-center">
-          <ul class="hidden md:block">
+        <div class="flex flex-grow flex-row items-center">
+          <ul class="hidden md:flex flex-row gap-2">
             <li class="flex items-center">
               <a href="/transactions">Transactions</a>
+            </li>
+            <li class="flex items-center">
+              <a href="/categories">Categories</a>
             </li>
           </ul>
           <ul class="flex flex-row list-none ml-auto">

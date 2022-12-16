@@ -45,7 +45,9 @@ export class GithubApi {
     }
 
     public static async getContent(user: string, repo: string): Promise<any> {
-        const response = await this.gitFetch(`${this.baseUri}/repos/${user}/${repo}/contents/`);
+        const response = await this.gitFetch(`${this.baseUri}/repos/${user}/${repo}/contents/`, {
+            cache: "no-store",
+        });
         return response.json();
     }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { categoriesChange } from "$lib/logic/database/category/categories.state";
   import databaseExporter from "$lib/logic/database/database-exporter";
   import { transactionsChange } from "$lib/logic/database/transaction/transactions.state";
   import ArrowUp from "../shared/icon/arrow-up.svelte";
@@ -11,6 +12,14 @@
 
   const onTransactionsChange = () => {
     if ($transactionsChange) {
+      processChanges();
+    }
+  };
+
+  $: $categoriesChange, onCategoriesChange();
+
+  const onCategoriesChange = () => {
+    if ($categoriesChange) {
       processChanges();
     }
   };
