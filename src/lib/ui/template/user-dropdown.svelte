@@ -16,8 +16,12 @@
   };
 </script>
 
-<div class="relative p-1 rounded-full cursor-pointer bg-zinc-700 hover:bg-zinc-300 flex" on:click={() => (expanded = !expanded)}>
-  <img src="{$userState?.avatar_url}" alt="avatar" class="h-6 max-w-none">
+<div
+  class="relative p-1 rounded-full cursor-pointer bg-zinc-700 hover:bg-zinc-300 flex"
+  on:click={() => (expanded = !expanded)}
+  on:keyup={() => (expanded = !expanded)}
+>
+  <img src={$userState?.avatar_url} alt="avatar" class="h-6 max-w-none" />
   {#if expanded}
     <div class="z-20">
       <div

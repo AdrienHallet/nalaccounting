@@ -6,6 +6,7 @@
   import { Transaction, type ITransaction } from "$lib/logic/model/transaction";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
   import { deleteTransaction, updateTransaction } from "$lib/logic/database/transaction/operations";
+  import { categories } from "$lib/logic/database/category/categories.state";
 
   export let transaction: ITransaction;
   let originalTransaction: ITransaction = new Transaction(transaction);
@@ -88,6 +89,19 @@
       on:focusout={(event) => event.currentTarget.value = parseFloat(event.currentTarget.value).toFixed(2)}
       on:input={updateAmount}
     />
+  </div>
+  <div>
+    <select
+      class="bg-transparent w-full"
+      bind:value={transaction.categoryId}
+    >
+      <option class="bg-zinc-600"></option>
+      {#each $categories as category}
+        <option 
+        class="bg-zinc-600"
+        value={category.id}>{category.name}</option>
+      {/each}
+    </select>
   </div>
   <div class="">
     <input

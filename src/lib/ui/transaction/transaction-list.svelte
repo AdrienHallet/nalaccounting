@@ -50,6 +50,7 @@
       >
         <div class="py-2 text-left">Date</div>
         <div class="py-2 text-left">Amount</div>
+        <div class="py-2 text-left">Category</div>
         <div class="py-2 text-left">Title</div>
         <div class="py-2 text-left" />
       </div>

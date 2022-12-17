@@ -5,7 +5,7 @@
   import { DexieService } from "$lib/logic/database/dexie.service";
 </script>
 
-{#if $isLoading.get(LOADING_COMPONENT.TRANSACTIONS)}
+{#if $isLoading.get(LOADING_COMPONENT.TRANSACTIONS) || $isLoading.get(LOADING_COMPONENT.CATEGORIES)}
   loading
   {DexieService.get()}
 {:else}
