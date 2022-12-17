@@ -18,8 +18,8 @@
     }
   };
 
-  $: category, transactionChange();
-  const transactionChange = () => {
+  $: category, cateogryChange();
+  const cateogryChange = () => {
     if (category.id != originalCategory.id) {
       originalCategory = new Category(category);
     } else {

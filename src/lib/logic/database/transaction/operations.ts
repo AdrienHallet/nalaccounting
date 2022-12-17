@@ -11,17 +11,17 @@ export const setTransactions = (toSet: Transaction[]) => {
 export const addTransaction = (toAdd: Transaction) => {
     prepend(transactions, toAdd);
     addDBTransaction(toAdd);
-    transactionsChange.set(true);
+    transactionsChange.set(new Date());
 }
 
 export const updateTransaction = (toUpdate: Transaction) => {
     update(transactions, toUpdate);
     updateDBTransaction(toUpdate);
-    transactionsChange.set(true);
+    transactionsChange.set(new Date());
 }
 
 export const deleteTransaction = (toDelete: Transaction) => {
     remove(transactions, toDelete);
     deleteDBTransaction(toDelete);
-    transactionsChange.set(true);
+    transactionsChange.set(new Date());
 }

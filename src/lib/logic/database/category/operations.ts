@@ -11,17 +11,17 @@ export const setCategories = (toSet: Category[]) => {
 export const addCategory = (toAdd: Category) => {
     prepend(categories, toAdd)
     addDBCategory(toAdd);
-    categoriesChange.set(true);
+    categoriesChange.set(new Date());
 }
 
 export const updateCategory = (toUpdate: Category) => {
     update(categories, toUpdate);
     updateDBCategory(toUpdate);
-    categoriesChange.set(true);
+    categoriesChange.set(new Date());
 }
 
 export const deleteCategory = (toDelete: Category) => {
     remove(categories, toDelete);
     deleteDBCategory(toDelete);
-    categoriesChange.set(true);
+    categoriesChange.set(new Date());
 }

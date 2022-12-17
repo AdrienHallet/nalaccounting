@@ -26,6 +26,9 @@
 
   let exportTimeout: NodeJS.Timer;
   const processChanges = () => {
+    if (!isPolling) {
+      return;
+    }
     isFresh = false;
     if (exportTimeout) {
       clearInterval(exportTimeout);
@@ -40,10 +43,12 @@
     isFresh = true;
     clearInterval(exportTimeout);
     transactionsChange.set(false);
+    categoriesChange.set(false);
   };
 
   const togglePolling = () => {
     isPolling = false;
+    clearInterval(exportTimeout);
   };
 </script>
 
