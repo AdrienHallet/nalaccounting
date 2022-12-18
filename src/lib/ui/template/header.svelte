@@ -1,5 +1,7 @@
 <script lang="ts">
   import { AuthState } from "$lib/logic/auth/auth.state";
+  import Logo from "../svg/logo.svelte";
+  import Title from "../svg/title.svelte";
   import NavigationDropdown from "./navigation-dropdown.svelte";
   import Poller from "./poller.svelte";
   import UserDropdown from "./user-dropdown.svelte";
@@ -14,13 +16,9 @@
     <div
       class="container px-4 mx-auto flex flex-row items-center justify-between"
     >
-      <div class="w-full flex justify-between px-4 static">
-        <a
-          class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase text-white"
-          href="/"
-        >
-          NALACCOUNTING
-        </a>
+      <div class="w-full flex px-4 static gap-2">
+        <div class="flex self-center"><Logo classes="h-10"/></div>
+        <div class="flex self-center"><Title classes="h-5 align-middle"/></div>
       </div>
       {#if $isAuthenticated}
         <div class="flex flex-grow flex-row items-center">
