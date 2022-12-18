@@ -16,9 +16,12 @@
     <div
       class="container px-4 mx-auto flex flex-row items-center justify-between"
     >
-      <div class="w-full flex px-4 static gap-2">
-        <div class="flex self-center"><Logo classes="h-10"/></div>
+      <div class="w-full flex px-4 static">
+        <a href="/" class="flex static gap-2">
+          <div class="flex self-center"><Logo classes="h-10"/></div>
         <div class="flex self-center"><Title classes="h-5 align-middle"/></div>
+        </a>
+        
       </div>
       {#if $isAuthenticated}
         <div class="flex flex-grow flex-row items-center">
