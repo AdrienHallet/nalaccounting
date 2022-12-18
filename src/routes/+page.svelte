@@ -1,5 +1,14 @@
 <script>
   import Dashboard from "$lib/ui/dashboard/dashboard.svelte";
+  import { isLoading } from "$lib/logic/loading/loading.state";
+  import { LOADING_COMPONENT } from "$lib/logic/loading/loading.enum";
+  import Loading from "$lib/ui/shared/loading.svelte";
 </script>
 
-<Dashboard />
+{#if $isLoading.get(LOADING_COMPONENT.CATEGORIES)}
+  <div class="flex flex-grow justify-center h-[200px] align-middle">
+    <Loading />
+  </div>
+{:else}
+  <Dashboard />
+{/if}
