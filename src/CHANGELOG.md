@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.2.0] - Soon finished
+## [0.2.0] - 2022-12-18
 ### Added
-- Categories
+- Transaction Categories
 - Dashboard graph
 
 ## [0.1.0] - 2022-08-15
