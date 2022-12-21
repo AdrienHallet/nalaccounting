@@ -3,24 +3,6 @@ import type { Transaction } from "$lib/logic/model/transaction";
 import { derived, type Readable } from "svelte/store";
 import { transactions } from "../transaction/transactions.state";
 
-export class BalanceFacade {
-    private static instance: BalanceFacade;
-
-    public dailyState: Readable<Balance[]>;
-
-    private constructor(
-    ) {
-        this.dailyState = derived(transactions, dailyFn);
-    }
-
-    public static get(): BalanceFacade {
-        if (!BalanceFacade.instance) {
-            this.instance = new BalanceFacade()
-        }
-        return BalanceFacade.instance;
-    }
-}
-
 const dailyFn = (origin: Transaction[], set: (value: Balance[]) => void) => {
     if (!origin || origin.length < 1) {
         set([]);
@@ -40,3 +22,5 @@ const dailyFn = (origin: Transaction[], set: (value: Balance[]) => void) => {
     accumulation.push(last);
     set(accumulation);
 };
+
+export const dailyState: Readable<Balance[]> = derived(transactions, dailyFn);
