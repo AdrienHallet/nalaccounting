@@ -1,7 +1,7 @@
 <script>
   import { guard } from "$lib/logic/auth/auth-guard";
   import Footer from "$lib/ui/template/footer.svelte";
-  import Header from "$lib/ui/template/header.svelte";
+  import Header from "$lib/ui/template/header/header.svelte";
   import "../app.css";
 
   // Guard all routes

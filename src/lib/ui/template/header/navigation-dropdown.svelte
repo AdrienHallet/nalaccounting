@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import EllipsisVertical from "../shared/icon/ellipsis-vertical.svelte";
+  import EllipsisVertical from "../../shared/icon/ellipsis-vertical.svelte";
 
   let expanded = false;
 

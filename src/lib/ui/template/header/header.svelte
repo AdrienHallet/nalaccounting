@@ -1,10 +1,11 @@
 <script lang="ts">
   import { AuthState } from "$lib/logic/auth/auth.state";
-  import Logo from "../svg/logo.svelte";
-  import Title from "../svg/title.svelte";
+  import Logo from "../../svg/logo.svelte";
+  import Title from "../../svg/title.svelte";
   import NavigationDropdown from "./navigation-dropdown.svelte";
-  import Poller from "./poller.svelte";
+  import Poller from "../poller.svelte";
   import UserDropdown from "./user-dropdown.svelte";
+  import HeaderLink from "./header-link.svelte";
 
   let isAuthenticated = AuthState.isAuthenticated;
 </script>
@@ -25,13 +26,10 @@
       </div>
       {#if $isAuthenticated}
         <div class="flex flex-grow flex-row items-center">
-          <ul class="hidden md:flex flex-row gap-2">
-            <li class="flex items-center">
-              <a href="/transactions">Transactions</a>
-            </li>
-            <li class="flex items-center">
-              <a href="/categories">Categories</a>
-            </li>
+          <ul class="hidden md:flex flex-row gap-1 mr-2">
+            <HeaderLink link="/transactions">Transactions</HeaderLink>
+            <div class="m-auto">|</div>
+            <HeaderLink link="/categories">Categories</HeaderLink>
           </ul>
           <ul class="flex flex-row list-none ml-auto">
             <li class="flex mr-2">
