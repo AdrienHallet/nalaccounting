@@ -5,9 +5,14 @@
 <script lang="ts">
   import { CATEGORIES_LAYOUT } from "./category.consts";
   import { Category } from "$lib/logic/model/category";
-  import { deleteCategory, updateCategory } from "$lib/logic/database/category/operations";
+  import {
+    deleteCategory,
+    updateCategory,
+  } from "$lib/logic/database/category/operations";
+  import Spinner from "../shared/spinner.svelte";
 
   export let category: Category;
+  export let categoryCount: any;
   let originalCategory: Category = new Category(category);
   let isEditing: boolean;
 
@@ -54,6 +59,13 @@
       readonly={!isEditing}
       on:focus={setEditing}
     />
+  </div>
+  <div>
+    {#await categoryCount}
+      <Spinner height="h-4" />
+    {:then count}
+      {count.get(category.id) || 0}
+    {/await}
   </div>
   <div class="text-center">
     <svg

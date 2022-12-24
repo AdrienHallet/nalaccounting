@@ -23,7 +23,6 @@ export const categoryCountConfig = (categoryCounts: CategoryCount[]) => {
             ],
         },
         options: {
-
             maintainAspectRatio: false,
         }
     }

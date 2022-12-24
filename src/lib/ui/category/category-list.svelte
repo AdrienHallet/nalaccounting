@@ -6,8 +6,10 @@
   import { CATEGORIES_LAYOUT } from "./category.consts";
   import { addCategory } from "$lib/logic/database/category/operations";
   import type { Category } from "$lib/logic/model/category";
+  import { getTransactionsPerCategory } from "$lib/logic/database/category/queries";
   
     let categoryVScroll: VirtualScroll;
+    let transactionsPerCategory = getTransactionsPerCategory()
   
     const add = () => {
       addCategory({
@@ -38,17 +40,17 @@
       <VirtualScroll
         bind:this={categoryVScroll}
         items={$categories}
-        classes="min-w-[500px]"
+        classes=""
       >
         <div
           class="sticky top-0 overflow-hidden {CATEGORIES_LAYOUT} auto-rows-auto bg-zinc-800 border border-x-0"
           slot="header"
         >
           <div class="py-2 text-left">Name</div>
+          <div class="py-2 text-left">Transactions</div>
           <div class="py-2 text-left" />
         </div>
-        <CategoryItem slot="row" let:item category={item} />
+        <CategoryItem slot="row" let:item category={item} categoryCount={transactionsPerCategory} />
       </VirtualScroll>
     </div>
   </div>
-  
