@@ -7,6 +7,7 @@
   import { addCategory } from "$lib/logic/database/category/operations";
   import type { Category } from "$lib/logic/model/category";
   import { getTransactionsPerCategory } from "$lib/logic/database/category/queries";
+  import { Type } from "../shared/enums";
   
     let categoryVScroll: VirtualScroll;
     let transactionsPerCategory = getTransactionsPerCategory()
@@ -32,7 +33,7 @@
           <h3 class="font-semibold text-lg">Categories</h3>
         </div>
         <div>
-          <Button primary on:click={add}>+ Add</Button>
+          <Button type={Type.PRIMARY} on:click={add}>+ Add</Button>
         </div>
       </div>
     </div>

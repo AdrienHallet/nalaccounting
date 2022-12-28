@@ -10,7 +10,7 @@
   let isAuthenticated = AuthState.isAuthenticated;
 </script>
 
-<header class="sticky top-0 z-50 bg-zinc-900">
+<header class="sticky top-0 z-40 bg-zinc-900">
   <nav
     class="relative flex flex-wrap items-center justify-between px-2 my-3"
   >
