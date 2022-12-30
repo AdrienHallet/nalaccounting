@@ -27,8 +27,8 @@
       </div>
       {#if $isAuthenticated}
         <div class="w-full text-center text-xs hidden md:inline">
-          Tot.: € {amountFormat($lastBalance.amount.toFixed(2))}
-          </div>
+          Tot.: € {amountFormat($lastBalance?.amount?.toFixed(2) || 0)}
+        </div>
         <div class="flex flex-grow flex-row items-center">
           <ul class="hidden md:flex flex-row gap-1 mr-2">
             <HeaderLink link="/transactions">Transactions</HeaderLink>
