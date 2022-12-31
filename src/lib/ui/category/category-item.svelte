@@ -5,11 +5,22 @@
 <script lang="ts">
   import { CATEGORIES_LAYOUT } from "./category.consts";
   import { Category } from "$lib/logic/model/category";
-  import { deleteCategory, updateCategory } from "$lib/logic/database/category/operations";
+  import {
+    deleteCategory,
+    updateCategory,
+  } from "$lib/logic/database/category/operations";
+  import Spinner from "../shared/spinner.svelte";
+  import Modal from "../shared/modal.svelte";
+  import Button from "../shared/button.svelte";
+  import { Type } from "../shared/enums";
+  import { categories } from "$lib/logic/database/category/categories.state";
 
   export let category: Category;
+  export let categoryCount: any;
+  export let newCategoryId: number;
   let originalCategory: Category = new Category(category);
   let isEditing: boolean;
+  let deleteCategoryModal = false;
 
   const update = () => {
     if (!originalCategory.equals(category)) {
@@ -36,8 +47,13 @@
   };
 
   const onClickRemove = () => {
-    deleteCategory(category);
+    deleteCategoryModal = true;
   };
+
+  const onConfirmRemove = () => {
+    deleteCategory(category, newCategoryId);
+    deleteCategoryModal = false;
+  }
 
   const editingClasses = `border-2 border-gray-100 bg-zinc-600 ${CATEGORIES_LAYOUT}`;
 </script>
@@ -54,6 +70,13 @@
       readonly={!isEditing}
       on:focus={setEditing}
     />
+  </div>
+  <div>
+    {#await categoryCount}
+      <Spinner height="h-4" />
+    {:then count}
+      {count.get(category.id) || 0}
+    {/await}
   </div>
   <div class="text-center">
     <svg
@@ -74,3 +97,33 @@
     </svg>
   </div>
 </span>
+
+{#await categoryCount then count}
+  <Modal bind:show={deleteCategoryModal}>
+    <div slot="body">
+      <b>{category.name}</b> still has
+      <b>{count.get(category.id)} transactions</b> attached
+      <br />
+      <select
+        class="bg-transparent w-full border-zinc-800 border-2"
+        bind:value={newCategoryId}
+      >
+        <option class="bg-zinc-600">(No Category)</option>
+        {#each $categories as newCategory}
+          {#if newCategory.id !== category.id}
+            <option class="bg-zinc-600" value={newCategory.id}
+              >{newCategory.name}</option
+            >
+          {/if}
+        {/each}
+      </select>
+    </div>
+    <div slot="footer">
+      <Button
+        type={Type.SECONDARY}
+        on:click={() => (deleteCategoryModal = false)}>Cancel</Button
+      >
+      <Button type={Type.PRIMARY} on:click={onConfirmRemove}>Apply</Button>
+    </div>
+  </Modal>
+{/await}

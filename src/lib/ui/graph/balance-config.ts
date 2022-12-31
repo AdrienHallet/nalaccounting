@@ -14,6 +14,7 @@ export const balanceConfig = (balances: Balance[]) => {
             ],
         },
         options: {
+            maintainAspectRatio: false,
             parsing: {
                 xAxisKey: "date",
                 yAxisKey: "amount",

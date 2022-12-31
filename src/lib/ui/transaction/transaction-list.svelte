@@ -6,6 +6,7 @@
   import VirtualScroll from "../shared/virtual/virtual-scroll.svelte";
   import TransactionItem from "./transaction-item.svelte";
   import { TRANSACTIONS_LAYOUT } from "./transactions.consts";
+  import { Type } from "../shared/enums";
 
   let transactionVScroll: VirtualScroll;
 
@@ -34,7 +35,7 @@
         <h3 class="font-semibold text-lg">Transactions</h3>
       </div>
       <div>
-        <Button primary on:click={add}>+ Add</Button>
+        <Button type={Type.PRIMARY} on:click={add}>+ Add</Button>
       </div>
     </div>
   </div>

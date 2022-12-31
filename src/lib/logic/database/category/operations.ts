@@ -1,7 +1,7 @@
 import type { Category } from "$lib/logic/model/category";
 import { init, prepend, remove, update } from "../common/operations";
 import { categories, categoriesChange } from "./categories.state";
-import { addDBCategory, deleteDBCategory, updateDBCategory } from "./queries";
+import { addDBCategory, deleteDBCategory, updateDBCategory, updateTransactionsCategory } from "./queries";
 
 export const setCategories = (toSet: Category[]) => {
     init(categories, toSet);
@@ -20,7 +20,8 @@ export const updateCategory = (toUpdate: Category) => {
     categoriesChange.set(new Date());
 }
 
-export const deleteCategory = (toDelete: Category) => {
+export const deleteCategory = (toDelete: Category, newCategoryId: number) => {
+    updateTransactionsCategory(toDelete.id as number, newCategoryId);
     remove(categories, toDelete);
     deleteDBCategory(toDelete);
     categoriesChange.set(new Date());
